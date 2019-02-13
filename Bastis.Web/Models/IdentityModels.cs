@@ -11,6 +11,8 @@ namespace Bastis.Models
     // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit http://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
     public class ApplicationUser : IdentityUser
     {
+        public virtual ICollection<CustomPermission> CustomPermissions { get; set; }
+
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
@@ -18,8 +20,6 @@ namespace Bastis.Models
             // Add custom user claims here
             return userIdentity;
         }
-
-        public virtual ICollection<CustomPermission> CustomPermissions { get; set; }
     }
 
     public class ApplicationRole : IdentityRole
@@ -67,7 +67,34 @@ namespace Bastis.Models
             return new ApplicationDbContext();
         }
 
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<CustomPermission>()
+                .HasRequired(n => n.ApplicationUser)
+                .WithMany(a => a.CustomPermissions)
+                .HasForeignKey(n => n.ApplicationUserId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Permission>()
+              .HasRequired(n => n.ApplicationRole)
+              .WithMany(a => a.Permissions)
+              .HasForeignKey(n => n.ApplicationRoleId)
+              .WillCascadeOnDelete(false);
+
+
+
+            //modelBuilder.Entity<CustomPermission>()
+            //   .HasRequired(c => c.ApplicationUser)
+            //   .WithMany(t => t.CustomPermissions)
+            //   .Map(m => m.MapKey("ApplicationUserId"));
+        }
+
+
+
         //ublic System.Data.Entity.DbSet<Bastis.Models.Entities.State> States { get; set; }
         public System.Data.Entity.DbSet<ApplicationRole> IdentityRoles { get; set; }
+
     }
 }

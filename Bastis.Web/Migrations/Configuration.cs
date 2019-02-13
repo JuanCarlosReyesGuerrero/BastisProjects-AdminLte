@@ -30,11 +30,20 @@ namespace Bastis.Migrations
             //    userManager.Create(userToInsert, "Password@123");
             //}
 
+            //if (!context.Roles.Any(r => r.Name == "AppAdmin"))
+            //{
+            //    var store = new RoleStore<IdentityRole>(context);
+            //    var manager = new RoleManager<IdentityRole>(store);
+            //    var role = new IdentityRole { Name = "AppAdmin" };
+
+            //    manager.Create(role);
+            //}
+
             if (!context.Roles.Any(r => r.Name == "AppAdmin"))
             {
-                var store = new RoleStore<IdentityRole>(context);
-                var manager = new RoleManager<IdentityRole>(store);
-                var role = new IdentityRole { Name = "AppAdmin" };
+                var store = new RoleStore<ApplicationRole>(context);
+                var manager = new RoleManager<ApplicationRole>(store);
+                var role = new ApplicationRole { Name = "AppAdmin" };
 
                 manager.Create(role);
             }

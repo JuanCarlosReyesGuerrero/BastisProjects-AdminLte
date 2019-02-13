@@ -11,33 +11,14 @@ using Bastis.Models.Entities;
 
 namespace Bastis.Controllers
 {
-    public class PermissionsController : Controller
+    public class PermissionsController_copia : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Permissions
         public ActionResult Index()
         {
-            var permissions = db.Permissions.Include(p => p.ApplicationRole).Include(p => p.Menu);
-
-            //var permissions = from p in db.Permissions
-            //                  join a in db.Roles
-            //      on p.ApplicationRoleId equals a.Id
-            //                  join m in db.Menus on p.MenuID equals m.MenuID
-            //                  select new
-            //                  {
-            //                      p.PermissionID,
-            //                      p.ApplicationRoleId,
-            //                      p.MenuID,
-            //                      p.ViewMenu,
-            //                      p.CreateOption,
-            //                      p.ReadOption,
-            //                      p.UpdateOption,
-            //                      p.DeleteOption,
-            //                      a.Name
-            //                  };
-
-
+            var permissions = db.Permissions.Include(p => p.Menu).Include(p=> p.ApplicationRole);
             return View(permissions.ToList());
         }
 
@@ -59,8 +40,8 @@ namespace Bastis.Controllers
         // GET: Permissions/Create
         public ActionResult Create()
         {
-            ViewBag.ApplicationRoleId = new SelectList(db.Roles, "Id", "Name");
             ViewBag.MenuID = new SelectList(db.Menus, "MenuID", "DisplayName");
+            ViewBag.RoleID = new SelectList(db.Roles, "Id", "Name");
             return View();
         }
 
@@ -69,7 +50,7 @@ namespace Bastis.Controllers
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "PermissionID,ApplicationRoleId,MenuID,ViewMenu,CreateOption,ReadOption,UpdateOption,DeleteOption")] Permission permission)
+        public ActionResult Create([Bind(Include = "PermissionID,RoleID,MenuID,ViewMenu,CreateOption,ReadOption,UpdateOption,DeleteOption")] Permission permission)
         {
             if (ModelState.IsValid)
             {
@@ -78,8 +59,8 @@ namespace Bastis.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.ApplicationRoleId = new SelectList(db.Roles, "Id", "Name", permission.ApplicationRoleId);
             ViewBag.MenuID = new SelectList(db.Menus, "MenuID", "DisplayName", permission.MenuID);
+            ViewBag.RoleID = new SelectList(db.IdentityRoles, "RoleID", "DisplayName", permission.ApplicationRoleId);
             return View(permission);
         }
 
@@ -95,7 +76,6 @@ namespace Bastis.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.ApplicationRoleId = new SelectList(db.Roles, "Id", "Name", permission.ApplicationRoleId);
             ViewBag.MenuID = new SelectList(db.Menus, "MenuID", "DisplayName", permission.MenuID);
             return View(permission);
         }
@@ -105,7 +85,7 @@ namespace Bastis.Controllers
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "PermissionID,ApplicationRoleId,MenuID,ViewMenu,CreateOption,ReadOption,UpdateOption,DeleteOption")] Permission permission)
+        public ActionResult Edit([Bind(Include = "PermissionID,RoleID,MenuID,ViewMenu,CreateOption,ReadOption,UpdateOption,DeleteOption")] Permission permission)
         {
             if (ModelState.IsValid)
             {
@@ -113,7 +93,6 @@ namespace Bastis.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.ApplicationRoleId = new SelectList(db.Roles, "Id", "Name", permission.ApplicationRoleId);
             ViewBag.MenuID = new SelectList(db.Menus, "MenuID", "DisplayName", permission.MenuID);
             return View(permission);
         }

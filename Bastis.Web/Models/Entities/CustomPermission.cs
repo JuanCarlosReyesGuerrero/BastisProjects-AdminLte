@@ -10,7 +10,9 @@ namespace Bastis.Models.Entities
         public int CustomPermissionID { get; set; }
 
         [Required(ErrorMessage = "xxxxx")]
-        public Guid UserID { get; set; }
+        //[StringLength(128)]
+        // public string UserID { get; set; }
+        public string ApplicationUserId { get; set; }
 
         [Required(ErrorMessage = "xxxxx")]
         public int MenuID { get; set; }

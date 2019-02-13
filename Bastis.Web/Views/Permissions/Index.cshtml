@@ -114,7 +114,8 @@
                                         @Html.DisplayNameFor(model => model.Menu.DisplayName)
                                     </th>
                                     <th>
-                                        @Html.DisplayNameFor(model => model.RoleID)
+                                        @*@Html.DisplayNameFor(model => model.RoleID)*@
+                                        @Html.DisplayNameFor(model => model.ApplicationRole.Name)
                                     </th>
                                     <th>
                                         @Html.DisplayNameFor(model => model.ViewMenu)
@@ -143,7 +144,8 @@
                                         @Html.DisplayFor(modelItem => item.Menu.DisplayName)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.RoleID)
+                                        @*@Html.DisplayFor(modelItem => item.RoleID)*@
+                                        @Html.DisplayFor(modelItem => item.ApplicationRole.Name)
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.ViewMenu)
@@ -179,7 +181,7 @@
                                         @Html.DisplayNameFor(model => model.Menu.DisplayName)
                                     </th>
                                     <th>
-                                        @Html.DisplayNameFor(model => model.RoleID)
+                                        @Html.DisplayNameFor(model => model.ApplicationRoleId)
                                     </th>
                                     <th>
                                         @Html.DisplayNameFor(model => model.ViewMenu)
