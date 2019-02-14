@@ -8,6 +8,8 @@ using System.Web;
 using System.Web.Mvc;
 using Bastis.Models;
 using Bastis.Models.Entities;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Bastis.Controllers
 {
@@ -18,7 +20,20 @@ namespace Bastis.Controllers
         // GET: Menus
         public ActionResult Index()
         {
-            return View(db.Menus.ToList());
+            // return View(db.Menus.ToList());
+            if (User.Identity.IsAuthenticated)
+            {
+                if (isAdminUser())
+                {
+                    return View(db.Menus.ToList());
+                }
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            return View();
         }
 
         // GET: Menus/Details/5
@@ -123,6 +138,26 @@ namespace Bastis.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        public Boolean isAdminUser()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                var user = User.Identity;
+                ApplicationDbContext context = new ApplicationDbContext();
+                var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+                var s = UserManager.GetRoles(user.GetUserId());
+                if (s[0].ToString() == "Admin")
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            return false;
         }
     }
 }

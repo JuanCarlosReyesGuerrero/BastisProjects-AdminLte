@@ -172,3 +172,4 @@ E:\Developer\BastisProjects\Bastis.Web\obj\Debug\Bastis.pdb
 E:\Developer\BastisProjects\Bastis.Web\obj\Debug\Bastis.Migrations.Initial.resources
 E:\Developer\BastisProjects\Bastis.Web\obj\Debug\Bastis.Web.csproj.GenerateResource.cache
 E:\Developer\BastisProjects\Bastis.Web\obj\Debug\Bastis.Migrations.Initial2.resources
+E:\Developer\BastisProjects\Bastis.Web\obj\Debug\Bastis.Web.csprojAssemblyReference.cache
