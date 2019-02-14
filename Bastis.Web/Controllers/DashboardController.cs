@@ -12,7 +12,22 @@ namespace Bastis.Controllers
 
         public ActionResult Dashboardv1()
         {
-            return View();
+            //return View();
+
+            if (User.Identity.IsAuthenticated)
+            {
+                //if (isAdminUser())
+                //{
+                return View();
+                //}
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            //return View();
+
         }
 
         public ActionResult Dashboardv2()
