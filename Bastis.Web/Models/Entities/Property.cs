@@ -1,11 +1,15 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Bastis.Models.Entities
 {
     public class Property
     {
-        public int ID { get; set; }
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Display(Name = "Number")]
+        public int PropertyID { get; set; }
 
         [Display(Name = "Propiedad título")]
         [Required(ErrorMessage = "Digite el código de la EPS")]
@@ -130,7 +134,7 @@ namespace Bastis.Models.Entities
 
 
 
-        public int PropertyID { get; set; }
+        public int PropertyIdentification { get; set; }
         public int DepartamentID { get; set; }
 
         // Inicio Auditoria de la tabla ---------------------------------------------------

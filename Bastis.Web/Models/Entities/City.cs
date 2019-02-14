@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Web;
 
 namespace Bastis.Models.Entities
 {
@@ -12,7 +9,7 @@ namespace Bastis.Models.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Display(Name = "Number")]
-        public Int64 ID { get; set; }
+        public Int64 CityID { get; set; }
 
         [Display(Name = "Código")]
         [Required(ErrorMessage = "Digite el código del municipio")]

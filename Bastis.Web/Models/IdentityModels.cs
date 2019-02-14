@@ -56,10 +56,8 @@ namespace Bastis.Models
         public DbSet<Permission> Permissions { get; set; }
         public DbSet<Property> Properties { get; set; }
         public DbSet<State> States { get; set; }
-
-
-
-
+        public DbSet<Client> Clients { get; set; }
+        public DbSet<Lead> Leads { get; set; }
 
 
         public static ApplicationDbContext Create()

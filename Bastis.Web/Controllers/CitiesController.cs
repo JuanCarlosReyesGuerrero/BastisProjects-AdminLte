@@ -36,7 +36,7 @@ namespace Bastis.Controllers
         // GET: Cities/Create
         public ActionResult Create()
         {
-            ViewBag.StateID = new SelectList(db.States, "ID", "Code");
+            ViewBag.StateID = new SelectList(db.States, "StateID", "Code");
             return View();
         }
 
@@ -45,7 +45,7 @@ namespace Bastis.Controllers
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Code,Name,UnifiedCode,StateID,StateCode,Status,UserRegisters,DateRegister,UserModifies,DateModified")] City city)
+        public ActionResult Create([Bind(Include = "CityID,Code,Name,UnifiedCode,StateID,StateCode,Status,UserRegisters,DateRegister,UserModifies,DateModified")] City city)
         {
             if (ModelState.IsValid)
             {
@@ -54,7 +54,7 @@ namespace Bastis.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.StateID = new SelectList(db.States, "ID", "Code", city.StateID);
+            ViewBag.StateID = new SelectList(db.States, "StateID", "Code", city.StateID);
             return View(city);
         }
 
@@ -70,7 +70,7 @@ namespace Bastis.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.StateID = new SelectList(db.States, "ID", "Code", city.StateID);
+            ViewBag.StateID = new SelectList(db.States, "StateID", "Code", city.StateID);
             return View(city);
         }
 
@@ -79,7 +79,7 @@ namespace Bastis.Controllers
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Code,Name,UnifiedCode,StateID,StateCode,Status,UserRegisters,DateRegister,UserModifies,DateModified")] City city)
+        public ActionResult Edit([Bind(Include = "CityID,Code,Name,UnifiedCode,StateID,StateCode,Status,UserRegisters,DateRegister,UserModifies,DateModified")] City city)
         {
             if (ModelState.IsValid)
             {
@@ -87,7 +87,7 @@ namespace Bastis.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.StateID = new SelectList(db.States, "ID", "Code", city.StateID);
+            ViewBag.StateID = new SelectList(db.States, "StateID", "Code", city.StateID);
             return View(city);
         }
 

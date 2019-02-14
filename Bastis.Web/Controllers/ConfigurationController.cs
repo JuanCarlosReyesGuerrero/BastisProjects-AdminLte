@@ -29,5 +29,10 @@ namespace Bastis.Controllers
         {
             return View();
         }
+
+        public ActionResult ApplicationRoles()
+        {
+            return View();
+        }
     }
 }

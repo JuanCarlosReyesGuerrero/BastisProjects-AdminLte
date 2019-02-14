@@ -9,7 +9,7 @@ namespace Bastis.Models.Entities
     {
         [Key]
         [Column(Order = 1)]
-        public Guid CustomerID { get; set; }
+        public Guid AgentID { get; set; }
 
         [Required]
         [MaxLength(128)]

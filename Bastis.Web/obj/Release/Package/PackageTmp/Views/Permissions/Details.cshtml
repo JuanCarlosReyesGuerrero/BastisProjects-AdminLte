@@ -1,0 +1,74 @@
+﻿@model Bastis.Models.Entities.Permission
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Permission</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Menu.DisplayName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Menu.DisplayName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RoleID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RoleID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ViewMenu)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ViewMenu)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreateOption)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreateOption)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ReadOption)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReadOption)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UpdateOption)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UpdateOption)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DeleteOption)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DeleteOption)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.PermissionID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

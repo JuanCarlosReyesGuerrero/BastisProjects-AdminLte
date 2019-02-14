@@ -183,16 +183,22 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\HTMLHelperExtensions.cs" />
-    <Compile Include="Migrations\201902132233164_Initial.cs" />
-    <Compile Include="Migrations\201902132233164_Initial.Designer.cs">
-      <DependentUpon>201902132233164_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201902141341100_Initial.cs" />
+    <Compile Include="Migrations\201902141341100_Initial.Designer.cs">
+      <DependentUpon>201902141341100_Initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201902141344164_Initial2.cs" />
+    <Compile Include="Migrations\201902141344164_Initial2.Designer.cs">
+      <DependentUpon>201902141344164_Initial2.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Entities\Agency.cs" />
     <Compile Include="Models\Entities\Agent.cs" />
     <Compile Include="Models\Entities\City.cs" />
+    <Compile Include="Models\Entities\Client.cs" />
     <Compile Include="Models\Entities\CustomPermission.cs" />
+    <Compile Include="Models\Entities\Lead.cs" />
     <Compile Include="Models\Entities\Menu.cs" />
     <Compile Include="Models\Entities\Permission.cs" />
     <Compile Include="Models\Entities\Property.cs" />
@@ -4103,6 +4109,7 @@
     <Content Include="Scripts\adminlte\plugins\timepicker\bootstrap-timepicker.js" />
     <Content Include="Scripts\adminlte\plugins\timepicker\bootstrap-timepicker.min.css" />
     <Content Include="Scripts\adminlte\plugins\timepicker\bootstrap-timepicker.min.js" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -4274,8 +4281,11 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201902132233164_Initial.resx">
-      <DependentUpon>201902132233164_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201902141341100_Initial.resx">
+      <DependentUpon>201902141341100_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902141344164_Initial2.resx">
+      <DependentUpon>201902141344164_Initial2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

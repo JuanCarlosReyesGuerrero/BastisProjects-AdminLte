@@ -6,7 +6,7 @@ namespace Bastis.Models.Entities
 {
     public class Agency
     {
-        public int ID { get; set; }
+        public int AgencyID { get; set; }
 
         // Inicio Auditoria de la tabla ---------------------------------------------------
         public Guid? UserRegisters { get; set; }

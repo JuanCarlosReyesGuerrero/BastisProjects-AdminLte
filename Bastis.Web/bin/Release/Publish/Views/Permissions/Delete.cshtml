@@ -1,0 +1,80 @@
+﻿@model Bastis.Models.Entities.Permission
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Permission</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Menu.DisplayName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Menu.DisplayName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RoleID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RoleID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ViewMenu)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ViewMenu)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreateOption)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreateOption)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ReadOption)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReadOption)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UpdateOption)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UpdateOption)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DeleteOption)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DeleteOption)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

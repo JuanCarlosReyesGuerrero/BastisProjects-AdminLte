@@ -10,7 +10,7 @@ namespace Bastis.Models.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Display(Name = "Number")]
-        public Int64 ID { get; set; }
+        public Int64 StateID { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
         public bool Status { get; set; }
