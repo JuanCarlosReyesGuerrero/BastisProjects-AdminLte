@@ -1,0 +1,250 @@
+﻿@model Bastis.Models.Entities.Property
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Property</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TypeID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TypeID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StatusID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StatusID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Location)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Location)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Bedrooms)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Bedrooms)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Bathrooms)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Bathrooms)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Floors)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Floors)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Garages)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Garages)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Area)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Area)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Size)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Size)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SaleRentPrice)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SaleRentPrice)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BeforePriceLabel)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BeforePriceLabel)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AfterPriceLabel)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AfterPriceLabel)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.VideoURL)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.VideoURL)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PropertyFeatures)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PropertyFeatures)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PropertyGallery)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PropertyGallery)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CountryID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CountryID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CityID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CityID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StateID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StateID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ZipPostalCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ZipPostalCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Neighborhood)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Neighborhood)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PropertyIdentification)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PropertyIdentification)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DepartamentID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DepartamentID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UserRegisters)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserRegisters)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateRegister)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateRegister)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UserModifies)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserModifies)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateModified)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateModified)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.PropertyID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

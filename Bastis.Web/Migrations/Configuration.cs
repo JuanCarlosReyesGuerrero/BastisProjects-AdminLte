@@ -48,13 +48,13 @@ namespace Bastis.Migrations
                 manager.Create(role);
             }
 
-            if (!context.Users.Any(u => u.UserName == "user@user.com"))
+            if (!context.Users.Any(u => u.UserName == "reygue28@gmail.com"))
             {
                 var store = new UserStore<ApplicationUser>(context);
                 var manager = new UserManager<ApplicationUser>(store);
-                var user = new ApplicationUser { UserName = "user@user.com" };
+                var user = new ApplicationUser { UserName = "reygue28@gmail.com" };
 
-                manager.Create(user, "Password@123");
+                manager.Create(user, "Juan2018.");
                 manager.AddToRole(user.Id, "AppAdmin");
             }
 

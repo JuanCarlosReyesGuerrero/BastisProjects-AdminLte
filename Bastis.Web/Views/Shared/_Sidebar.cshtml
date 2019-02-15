@@ -41,20 +41,34 @@
             </li>
 
 
+            <li class="@Html.IsSelected(controller: "Administration") treeview">
+                <a href="@Url.Action("Dashboardv1", "Administration")">
+                <i class="fa fa-dashboard"></i> <span>Administración</span>
+                <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="@Html.IsSelected(action: "Agencies")"><a href="@Url.Action("Index", "Agencies")"><i class="fa fa-circle-o"></i> Inmobiliarias</a></li>
+                    <li class="@Html.IsSelected(action: "Properties")"><a href="@Url.Action("Index", "Properties")"><i class="fa fa-circle-o"></i> Inmuebles</a></li>
+                    <li class="@Html.IsSelected(action: "Agents")"><a href="@Url.Action("Index", "Agents")"><i class="fa fa-circle-o"></i> Agentes</a></li>
+                </ul>
+            </li>
+
 
             <li class="@Html.IsSelected(controller: "Configuration") treeview">
-                <a href="@Url.Action("States", "Configuration")">
-                    <i class="fa fa-dashboard"></i> <span>Configuración</span>
-                    <span class="pull-right-container">
-                        <i class="fa fa-angle-left pull-right"></i>
-                    </span>
+                <a href="@Url.Action("Dashboardv1", "Configuration")">
+                <i class="fa fa-dashboard"></i> <span>Configuración</span>
+                <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                </span>
                 </a>
                 <ul class="treeview-menu">
                     <li class="@Html.IsSelected(action: "States")"><a href="@Url.Action("Index", "States")"><i class="fa fa-circle-o"></i> Departamentos</a></li>
                     <li class="@Html.IsSelected(action: "Cities")"><a href="@Url.Action("Index", "Cities")"><i class="fa fa-circle-o"></i> Municipios</a></li>
                     <li class="@Html.IsSelected(action: "Permissions")"><a href="@Url.Action("Index", "Permissions")"><i class="fa fa-circle-o"></i> Permisos</a></li>
                     <li class="@Html.IsSelected(action: "Menus")"><a href="@Url.Action("Index", "Menus")"><i class="fa fa-circle-o"></i> Menus</a></li>
-                    <li class="@Html.IsSelected(action: "ApplicationRoles")"><a href="@Url.Action("Index", "ApplicationRoles")"><i class="fa fa-circle-o"></i> Roles</a></li>                    
+                    <li class="@Html.IsSelected(action: "ApplicationRoles")"><a href="@Url.Action("Index", "ApplicationRoles")"><i class="fa fa-circle-o"></i> Roles</a></li>
                 </ul>
             </li>
 

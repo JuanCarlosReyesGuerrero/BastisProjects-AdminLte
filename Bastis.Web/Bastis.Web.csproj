@@ -160,6 +160,9 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdministrationController.cs" />
+    <Compile Include="Controllers\AgenciesController.cs" />
+    <Compile Include="Controllers\AgentsController.cs" />
     <Compile Include="Controllers\ApplicationRolesController.cs" />
     <Compile Include="Controllers\CalendarController.cs" />
     <Compile Include="Controllers\ChartsController.cs" />
@@ -175,6 +178,7 @@
     <Compile Include="Controllers\MenusController.cs" />
     <Compile Include="Controllers\PermissionsController.cs" />
     <Compile Include="Controllers\PermissionsController_copia.cs" />
+    <Compile Include="Controllers\PropertiesController.cs" />
     <Compile Include="Controllers\StatesController.cs" />
     <Compile Include="Controllers\TablesController.cs" />
     <Compile Include="Controllers\UIController.cs" />
@@ -183,13 +187,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\HTMLHelperExtensions.cs" />
-    <Compile Include="Migrations\201902141341100_Initial.cs" />
-    <Compile Include="Migrations\201902141341100_Initial.Designer.cs">
-      <DependentUpon>201902141341100_Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201902141344164_Initial2.cs" />
-    <Compile Include="Migrations\201902141344164_Initial2.Designer.cs">
-      <DependentUpon>201902141344164_Initial2.cs</DependentUpon>
+    <Compile Include="Migrations\201902151308020_Initial.cs" />
+    <Compile Include="Migrations\201902151308020_Initial.Designer.cs">
+      <DependentUpon>201902151308020_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -4185,9 +4185,25 @@
     <Content Include="Views\ApplicationRoles\Edit.cshtml" />
     <Content Include="Views\ApplicationRoles\Index.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Properties\Create.cshtml" />
+    <Content Include="Views\Properties\Delete.cshtml" />
+    <Content Include="Views\Properties\Details.cshtml" />
+    <Content Include="Views\Properties\Edit.cshtml" />
+    <Content Include="Views\Properties\Index.cshtml" />
+    <Content Include="Views\Agencies\Create.cshtml" />
+    <Content Include="Views\Agencies\Delete.cshtml" />
+    <Content Include="Views\Agencies\Details.cshtml" />
+    <Content Include="Views\Agencies\Edit.cshtml" />
+    <Content Include="Views\Agencies\Index.cshtml" />
+    <Content Include="Views\Agents\Create.cshtml" />
+    <Content Include="Views\Agents\Delete.cshtml" />
+    <Content Include="Views\Agents\Details.cshtml" />
+    <Content Include="Views\Agents\Edit.cshtml" />
+    <Content Include="Views\Agents\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Administration\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -4282,11 +4298,8 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201902141341100_Initial.resx">
-      <DependentUpon>201902141341100_Initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201902141344164_Initial2.resx">
-      <DependentUpon>201902141344164_Initial2.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201902151308020_Initial.resx">
+      <DependentUpon>201902151308020_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

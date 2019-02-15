@@ -1,0 +1,154 @@
+﻿@model Bastis.Models.Entities.Agent
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Agent</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Agency.AgencyID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Agency.AgencyID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EmploymentCharge)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EmploymentCharge)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Expirience)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Expirience)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Phone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Phone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Mobile)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Mobile)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AboutMe)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AboutMe)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SocialNetworks)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SocialNetworks)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Website)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Website)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProfilePicture)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProfilePicture)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UserRegisters)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserRegisters)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateRegister)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateRegister)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UserModifies)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserModifies)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateModified)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateModified)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.AgentID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

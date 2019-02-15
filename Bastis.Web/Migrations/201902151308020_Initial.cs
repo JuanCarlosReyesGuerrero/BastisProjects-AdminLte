@@ -83,14 +83,17 @@ namespace Bastis.Migrations
                         Agency_AgencyID = c.Int(),
                         Agent_AgentID = c.Guid(),
                         State_StateID = c.Long(),
+                        Client_ClientID = c.Guid(),
                     })
                 .PrimaryKey(t => t.PropertyID)
                 .ForeignKey("dbo.Agencies", t => t.Agency_AgencyID)
                 .ForeignKey("dbo.Agents", t => t.Agent_AgentID)
                 .ForeignKey("dbo.States", t => t.State_StateID)
+                .ForeignKey("dbo.Clients", t => t.Client_ClientID)
                 .Index(t => t.Agency_AgencyID)
                 .Index(t => t.Agent_AgentID)
-                .Index(t => t.State_StateID);
+                .Index(t => t.State_StateID)
+                .Index(t => t.Client_ClientID);
             
             CreateTable(
                 "dbo.States",
@@ -126,6 +129,21 @@ namespace Bastis.Migrations
                 .PrimaryKey(t => t.CityID)
                 .ForeignKey("dbo.States", t => t.StateID, cascadeDelete: true)
                 .Index(t => t.StateID);
+            
+            CreateTable(
+                "dbo.Clients",
+                c => new
+                    {
+                        ClientID = c.Guid(nullable: false),
+                        UserRegisters = c.Guid(),
+                        DateRegister = c.DateTime(),
+                        UserModifies = c.Guid(),
+                        DateModified = c.DateTime(),
+                        Agent_AgentID = c.Guid(),
+                    })
+                .PrimaryKey(t => t.ClientID)
+                .ForeignKey("dbo.Agents", t => t.Agent_AgentID)
+                .Index(t => t.Agent_AgentID);
             
             CreateTable(
                 "dbo.CustomPermissions",
@@ -243,11 +261,31 @@ namespace Bastis.Migrations
                 .PrimaryKey(t => t.Id)
                 .Index(t => t.Name, unique: true, name: "RoleNameIndex");
             
+            CreateTable(
+                "dbo.Leads",
+                c => new
+                    {
+                        LeadID = c.Guid(nullable: false),
+                        UserRegisters = c.Guid(),
+                        DateRegister = c.DateTime(),
+                        UserModifies = c.Guid(),
+                        DateModified = c.DateTime(),
+                        Agent_AgentID = c.Guid(),
+                        Property_PropertyID = c.Int(),
+                    })
+                .PrimaryKey(t => t.LeadID)
+                .ForeignKey("dbo.Agents", t => t.Agent_AgentID)
+                .ForeignKey("dbo.Properties", t => t.Property_PropertyID)
+                .Index(t => t.Agent_AgentID)
+                .Index(t => t.Property_PropertyID);
+            
         }
         
         public override void Down()
         {
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
+            DropForeignKey("dbo.Leads", "Property_PropertyID", "dbo.Properties");
+            DropForeignKey("dbo.Leads", "Agent_AgentID", "dbo.Agents");
             DropForeignKey("dbo.Permissions", "MenuID", "dbo.Menus");
             DropForeignKey("dbo.Permissions", "ApplicationRoleId", "dbo.AspNetRoles");
             DropForeignKey("dbo.CustomPermissions", "MenuID", "dbo.Menus");
@@ -255,11 +293,15 @@ namespace Bastis.Migrations
             DropForeignKey("dbo.AspNetUserRoles", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserLogins", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserClaims", "UserId", "dbo.AspNetUsers");
+            DropForeignKey("dbo.Properties", "Client_ClientID", "dbo.Clients");
+            DropForeignKey("dbo.Clients", "Agent_AgentID", "dbo.Agents");
             DropForeignKey("dbo.Properties", "State_StateID", "dbo.States");
             DropForeignKey("dbo.Cities", "StateID", "dbo.States");
             DropForeignKey("dbo.Properties", "Agent_AgentID", "dbo.Agents");
             DropForeignKey("dbo.Properties", "Agency_AgencyID", "dbo.Agencies");
             DropForeignKey("dbo.Agents", "AgencyID", "dbo.Agencies");
+            DropIndex("dbo.Leads", new[] { "Property_PropertyID" });
+            DropIndex("dbo.Leads", new[] { "Agent_AgentID" });
             DropIndex("dbo.AspNetRoles", "RoleNameIndex");
             DropIndex("dbo.Permissions", new[] { "MenuID" });
             DropIndex("dbo.Permissions", new[] { "ApplicationRoleId" });
@@ -270,11 +312,14 @@ namespace Bastis.Migrations
             DropIndex("dbo.AspNetUsers", "UserNameIndex");
             DropIndex("dbo.CustomPermissions", new[] { "MenuID" });
             DropIndex("dbo.CustomPermissions", new[] { "ApplicationUserId" });
+            DropIndex("dbo.Clients", new[] { "Agent_AgentID" });
             DropIndex("dbo.Cities", new[] { "StateID" });
+            DropIndex("dbo.Properties", new[] { "Client_ClientID" });
             DropIndex("dbo.Properties", new[] { "State_StateID" });
             DropIndex("dbo.Properties", new[] { "Agent_AgentID" });
             DropIndex("dbo.Properties", new[] { "Agency_AgencyID" });
             DropIndex("dbo.Agents", new[] { "AgencyID" });
+            DropTable("dbo.Leads");
             DropTable("dbo.AspNetRoles");
             DropTable("dbo.Permissions");
             DropTable("dbo.Menus");
@@ -283,6 +328,7 @@ namespace Bastis.Migrations
             DropTable("dbo.AspNetUserClaims");
             DropTable("dbo.AspNetUsers");
             DropTable("dbo.CustomPermissions");
+            DropTable("dbo.Clients");
             DropTable("dbo.Cities");
             DropTable("dbo.States");
             DropTable("dbo.Properties");

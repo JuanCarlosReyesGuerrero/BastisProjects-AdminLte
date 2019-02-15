@@ -1,0 +1,129 @@
+﻿@model IEnumerable<Bastis.Models.Entities.Agent>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Agency.AgencyID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LastName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Address)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EmploymentCharge)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Expirience)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Phone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Mobile)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AboutMe)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SocialNetworks)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Website)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProfilePicture)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserRegisters)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateRegister)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserModifies)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateModified)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Agency.AgencyID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FirstName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LastName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Address)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EmploymentCharge)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Expirience)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Phone)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Mobile)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AboutMe)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SocialNetworks)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Website)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProfilePicture)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserRegisters)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateRegister)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserModifies)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateModified)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.AgentID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.AgentID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.AgentID })
+        </td>
+    </tr>
+}
+
+</table>

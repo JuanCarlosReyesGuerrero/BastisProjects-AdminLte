@@ -8,125 +8,116 @@ using System.Web;
 using System.Web.Mvc;
 using Bastis.Models;
 using Bastis.Models.Entities;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Bastis.Controllers
 {
-    public class MenusController : Controller
+    public class AgentsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Menus
+        // GET: Agents
         public ActionResult Index()
         {
-            // return View(db.Menus.ToList());
-            if (User.Identity.IsAuthenticated)
-            {
-                if (isAdminUser())
-                {
-                    return View(db.Menus.ToList());
-                }
-            }
-            else
-            {
-                return RedirectToAction("Index", "Home");
-            }
-
-            return View();
+            var agents = db.Agents.Include(a => a.Agency);
+            return View(agents.ToList());
         }
 
-        // GET: Menus/Details/5
-        public ActionResult Details(int? id)
+        // GET: Agents/Details/5
+        public ActionResult Details(Guid? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Menu menu = db.Menus.Find(id);
-            if (menu == null)
+            Agent agent = db.Agents.Find(id);
+            if (agent == null)
             {
                 return HttpNotFound();
             }
-            return View(menu);
+            return View(agent);
         }
 
-        // GET: Menus/Create
+        // GET: Agents/Create
         public ActionResult Create()
         {
+            ViewBag.AgencyID = new SelectList(db.Agencies, "AgencyID", "AgencyID");
             return View();
         }
 
-        // POST: Menus/Create
+        // POST: Agents/Create
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "MenuID,DisplayName,ParentMenuID,OrderNumber,MenuURL,MenuIcon")] Menu menu)
+        public ActionResult Create([Bind(Include = "AgentID,FirstName,LastName,Address,EmploymentCharge,Expirience,Email,Phone,Mobile,AboutMe,SocialNetworks,Website,ProfilePicture,AgencyID,UserRegisters,DateRegister,UserModifies,DateModified")] Agent agent)
         {
             if (ModelState.IsValid)
             {
-                db.Menus.Add(menu);
+                agent.AgentID = Guid.NewGuid();
+                db.Agents.Add(agent);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(menu);
+            ViewBag.AgencyID = new SelectList(db.Agencies, "AgencyID", "AgencyID", agent.AgencyID);
+            return View(agent);
         }
 
-        // GET: Menus/Edit/5
-        public ActionResult Edit(int? id)
+        // GET: Agents/Edit/5
+        public ActionResult Edit(Guid? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Menu menu = db.Menus.Find(id);
-            if (menu == null)
+            Agent agent = db.Agents.Find(id);
+            if (agent == null)
             {
                 return HttpNotFound();
             }
-            return View(menu);
+            ViewBag.AgencyID = new SelectList(db.Agencies, "AgencyID", "AgencyID", agent.AgencyID);
+            return View(agent);
         }
 
-        // POST: Menus/Edit/5
+        // POST: Agents/Edit/5
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "MenuID,DisplayName,ParentMenuID,OrderNumber,MenuURL,MenuIcon")] Menu menu)
+        public ActionResult Edit([Bind(Include = "AgentID,FirstName,LastName,Address,EmploymentCharge,Expirience,Email,Phone,Mobile,AboutMe,SocialNetworks,Website,ProfilePicture,AgencyID,UserRegisters,DateRegister,UserModifies,DateModified")] Agent agent)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(menu).State = EntityState.Modified;
+                db.Entry(agent).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(menu);
+            ViewBag.AgencyID = new SelectList(db.Agencies, "AgencyID", "AgencyID", agent.AgencyID);
+            return View(agent);
         }
 
-        // GET: Menus/Delete/5
-        public ActionResult Delete(int? id)
+        // GET: Agents/Delete/5
+        public ActionResult Delete(Guid? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Menu menu = db.Menus.Find(id);
-            if (menu == null)
+            Agent agent = db.Agents.Find(id);
+            if (agent == null)
             {
                 return HttpNotFound();
             }
-            return View(menu);
+            return View(agent);
         }
 
-        // POST: Menus/Delete/5
+        // POST: Agents/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(Guid id)
         {
-            Menu menu = db.Menus.Find(id);
-            db.Menus.Remove(menu);
+            Agent agent = db.Agents.Find(id);
+            db.Agents.Remove(agent);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
@@ -138,26 +129,6 @@ namespace Bastis.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }
-
-        public Boolean isAdminUser()
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                var user = User.Identity;
-                ApplicationDbContext context = new ApplicationDbContext();
-                var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
-                var s = UserManager.GetRoles(user.GetUserId());
-                if (s[0].ToString() == "AppAdmin")
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            return false;
         }
     }
 }

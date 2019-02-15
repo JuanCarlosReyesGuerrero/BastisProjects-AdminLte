@@ -1,0 +1,201 @@
+﻿@model IEnumerable<Bastis.Models.Entities.Property>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TypeID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StatusID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Location)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Bedrooms)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Bathrooms)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Floors)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Garages)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Area)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Size)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SaleRentPrice)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BeforePriceLabel)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AfterPriceLabel)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.VideoURL)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PropertyFeatures)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PropertyGallery)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Address)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CountryID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CityID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StateID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ZipPostalCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Neighborhood)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PropertyIdentification)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DepartamentID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserRegisters)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateRegister)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserModifies)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateModified)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TypeID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.StatusID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Location)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Bedrooms)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Bathrooms)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Floors)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Garages)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Area)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Size)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SaleRentPrice)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BeforePriceLabel)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AfterPriceLabel)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.VideoURL)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PropertyFeatures)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PropertyGallery)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Address)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CountryID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CityID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.StateID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ZipPostalCode)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Neighborhood)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PropertyIdentification)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DepartamentID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserRegisters)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateRegister)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserModifies)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateModified)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.PropertyID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.PropertyID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.PropertyID })
+        </td>
+    </tr>
+}
+
+</table>

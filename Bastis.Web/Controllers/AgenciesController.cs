@@ -8,125 +8,110 @@ using System.Web;
 using System.Web.Mvc;
 using Bastis.Models;
 using Bastis.Models.Entities;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Bastis.Controllers
 {
-    public class MenusController : Controller
+    public class AgenciesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Menus
+        // GET: Agencies
         public ActionResult Index()
         {
-            // return View(db.Menus.ToList());
-            if (User.Identity.IsAuthenticated)
-            {
-                if (isAdminUser())
-                {
-                    return View(db.Menus.ToList());
-                }
-            }
-            else
-            {
-                return RedirectToAction("Index", "Home");
-            }
-
-            return View();
+            return View(db.Agencies.ToList());
         }
 
-        // GET: Menus/Details/5
+        // GET: Agencies/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Menu menu = db.Menus.Find(id);
-            if (menu == null)
+            Agency agency = db.Agencies.Find(id);
+            if (agency == null)
             {
                 return HttpNotFound();
             }
-            return View(menu);
+            return View(agency);
         }
 
-        // GET: Menus/Create
+        // GET: Agencies/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Menus/Create
+        // POST: Agencies/Create
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "MenuID,DisplayName,ParentMenuID,OrderNumber,MenuURL,MenuIcon")] Menu menu)
+        public ActionResult Create([Bind(Include = "AgencyID,UserRegisters,DateRegister,UserModifies,DateModified")] Agency agency)
         {
             if (ModelState.IsValid)
             {
-                db.Menus.Add(menu);
+                db.Agencies.Add(agency);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(menu);
+            return View(agency);
         }
 
-        // GET: Menus/Edit/5
+        // GET: Agencies/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Menu menu = db.Menus.Find(id);
-            if (menu == null)
+            Agency agency = db.Agencies.Find(id);
+            if (agency == null)
             {
                 return HttpNotFound();
             }
-            return View(menu);
+            return View(agency);
         }
 
-        // POST: Menus/Edit/5
+        // POST: Agencies/Edit/5
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "MenuID,DisplayName,ParentMenuID,OrderNumber,MenuURL,MenuIcon")] Menu menu)
+        public ActionResult Edit([Bind(Include = "AgencyID,UserRegisters,DateRegister,UserModifies,DateModified")] Agency agency)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(menu).State = EntityState.Modified;
+                db.Entry(agency).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(menu);
+            return View(agency);
         }
 
-        // GET: Menus/Delete/5
+        // GET: Agencies/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Menu menu = db.Menus.Find(id);
-            if (menu == null)
+            Agency agency = db.Agencies.Find(id);
+            if (agency == null)
             {
                 return HttpNotFound();
             }
-            return View(menu);
+            return View(agency);
         }
 
-        // POST: Menus/Delete/5
+        // POST: Agencies/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Menu menu = db.Menus.Find(id);
-            db.Menus.Remove(menu);
+            Agency agency = db.Agencies.Find(id);
+            db.Agencies.Remove(agency);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
@@ -138,26 +123,6 @@ namespace Bastis.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }
-
-        public Boolean isAdminUser()
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                var user = User.Identity;
-                ApplicationDbContext context = new ApplicationDbContext();
-                var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
-                var s = UserManager.GetRoles(user.GetUserId());
-                if (s[0].ToString() == "AppAdmin")
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            return false;
         }
     }
 }

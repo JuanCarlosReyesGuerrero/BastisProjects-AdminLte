@@ -1,10 +1,14 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
 
 namespace Bastis.Controllers
 {
-    public class DashboardController : Controller
+    public class AdministrationController : Controller
     {
-        // GET: Dashboard
+        // GET: Administration
         public ActionResult Index()
         {
             if (User.Identity.IsAuthenticated)
@@ -17,7 +21,7 @@ namespace Bastis.Controllers
             }
         }
 
-        public ActionResult Dashboardv1()
+        public ActionResult Property()
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -29,7 +33,19 @@ namespace Bastis.Controllers
             }
         }
 
-        public ActionResult Dashboardv2()
+        public ActionResult Agency()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
+        }
+
+        public ActionResult Agent()
         {
             if (User.Identity.IsAuthenticated)
             {
