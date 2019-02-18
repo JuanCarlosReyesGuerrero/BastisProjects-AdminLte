@@ -159,6 +159,7 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Common\Autentication.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdministrationController.cs" />
     <Compile Include="Controllers\AgenciesController.cs" />
@@ -177,7 +178,6 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MenusController.cs" />
     <Compile Include="Controllers\PermissionsController.cs" />
-    <Compile Include="Controllers\PermissionsController_copia.cs" />
     <Compile Include="Controllers\PropertiesController.cs" />
     <Compile Include="Controllers\StatesController.cs" />
     <Compile Include="Controllers\TablesController.cs" />
@@ -191,6 +191,10 @@
     <Compile Include="Migrations\201902151308020_Initial.Designer.cs">
       <DependentUpon>201902151308020_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201902181319183_Photo.cs" />
+    <Compile Include="Migrations\201902181319183_Photo.Designer.cs">
+      <DependentUpon>201902181319183_Photo.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Entities\Agency.cs" />
@@ -201,6 +205,7 @@
     <Compile Include="Models\Entities\Lead.cs" />
     <Compile Include="Models\Entities\Menu.cs" />
     <Compile Include="Models\Entities\Permission.cs" />
+    <Compile Include="Models\Entities\Photo.cs" />
     <Compile Include="Models\Entities\Property.cs" />
     <Compile Include="Models\Entities\State.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -4300,6 +4305,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201902151308020_Initial.resx">
       <DependentUpon>201902151308020_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902181319183_Photo.resx">
+      <DependentUpon>201902181319183_Photo.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

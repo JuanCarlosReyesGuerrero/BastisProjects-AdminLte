@@ -8,6 +8,8 @@ using System.Web;
 using System.Web.Mvc;
 using Bastis.Models;
 using Bastis.Models.Entities;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Bastis.Controllers
 {
@@ -18,8 +20,20 @@ namespace Bastis.Controllers
         // GET: Agents
         public ActionResult Index()
         {
-            var agents = db.Agents.Include(a => a.Agency);
-            return View(agents.ToList());
+            if (User.Identity.IsAuthenticated)
+            {
+                if (isAdminUser())
+                {
+                    var agents = db.Agents.Include(a => a.Agency);
+                    return View(agents.ToList());
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            return View();
         }
 
         // GET: Agents/Details/5
@@ -129,6 +143,26 @@ namespace Bastis.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        public Boolean isAdminUser()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                var user = User.Identity;
+                ApplicationDbContext context = new ApplicationDbContext();
+                var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+                var s = UserManager.GetRoles(user.GetUserId());
+                if (s[0].ToString() == "AppAdmin")
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            return false;
         }
     }
 }

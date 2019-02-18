@@ -1,12 +1,13 @@
-﻿using System;
+﻿using Bastis.Models;
+using Bastis.Models.Entities;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using Bastis.Models;
 
 namespace Bastis.Controllers
 {
@@ -16,8 +17,22 @@ namespace Bastis.Controllers
 
         // GET: ApplicationRoles
         public ActionResult Index()
-        {
-            return View(db.IdentityRoles.ToList());
+        {            
+            if (User.Identity.IsAuthenticated)
+            {
+                if (isAdminUser())
+                {
+                  var AAA =   ListPermissions();
+
+                    return View(db.IdentityRoles.ToList());
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            return View();
         }
 
         // GET: ApplicationRoles/Details/5
@@ -123,5 +138,45 @@ namespace Bastis.Controllers
             }
             base.Dispose(disposing);
         }
+
+        public Boolean isAdminUser()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                var user = User.Identity;
+                ApplicationDbContext context = new ApplicationDbContext();
+                var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+                var s = UserManager.GetRoles(user.GetUserId());
+                if (s[0].ToString() == "AppAdmin")
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            return false;
+        }
+
+        public List<Permission> ListPermissions()
+        {
+            PermissionsController permiso = new PermissionsController
+
+                permiso.Details(1).
+
+            //var query = _applicationDbContext.Enrollment
+            //    .Include(a => a.Course)
+            //    .Include(x => x.Student)
+            //    .ToList();
+
+            //return query;
+
+            //var permissions = db.Permissions.Include(p => p.ApplicationRole).Include(p => p.Menu);
+            var permissions = db.Permissions.ToList();
+            return permissions;
+
+        }
+
     }
 }

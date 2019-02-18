@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using Bastis.Models;
+using Bastis.Models.Entities;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using System;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using Bastis.Models;
-using Bastis.Models.Entities;
 
 namespace Bastis.Controllers
 {
@@ -17,8 +16,20 @@ namespace Bastis.Controllers
 
         // GET: Properties
         public ActionResult Index()
-        {
-            return View(db.Properties.ToList());
+        {            
+            if (User.Identity.IsAuthenticated)
+            {
+                if (isAdminUser())
+                {
+                    return View(db.Properties.ToList());
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            return View();
         }
 
         // GET: Properties/Details/5
@@ -123,6 +134,26 @@ namespace Bastis.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        public Boolean isAdminUser()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                var user = User.Identity;
+                ApplicationDbContext context = new ApplicationDbContext();
+                var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+                var s = UserManager.GetRoles(user.GetUserId());
+                if (s[0].ToString() == "AppAdmin")
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            return false;
         }
     }
 }

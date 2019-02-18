@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Web;
 
 namespace Bastis.Models.Entities
 {
-    public class Agency
+    public class Photo
     {
-        //public Order()
-        //{
-        //    Items = new HashSet<Item>();
-        //}
+        [Key]
+        [Column(Order = 1)]
+        public Guid PhotoID { get; set; }
 
-        public int AgencyID { get; set; }
+        public string URLPhoto { get; set; }
 
         // Inicio Auditoria de la tabla ---------------------------------------------------
         public Guid? UserRegisters { get; set; }
@@ -27,21 +29,6 @@ namespace Bastis.Models.Entities
         public DateTime? DateModified { get; set; }
         // Fin Auditoria de la tabla ---------------------------------------------------
 
-
-        public virtual ICollection<Agent> Agents { get; set; }
-        public virtual ICollection<Property> Properties { get; set; }
-
-
-        //        Nombre
-        //Direccion
-        //Phone:
-        //Mobile:
-        //Imagen
-        //License:
-        //Website:
-        //redes sociales
-        //Descripcion
-
-        //https://www.pluralsight.com/guides/asp-net-mvc-getting-default-data-binding-right-for-hierarchical-views
+        public virtual Property Property { get; set; }
     }
 }

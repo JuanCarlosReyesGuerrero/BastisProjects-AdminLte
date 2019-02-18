@@ -40,16 +40,13 @@ namespace Bastis.Models
         }
 
 
-
-
-        public DbSet<Agency> Agencies { get; set; }
-        public DbSet<Agent> Agents { get; set; }
-
         //public DbSet<AspNetRoles> AspNetRoles { get; set; }
         //public DbSet<AspNetUserClaims> AspNetUserClaims { get; set; }
         //public DbSet<AspNetUserLogins> AspNetUserLogins { get; set; }
         //public DbSet<AspNetUsers> AspNetUsers { get; set; }
 
+        public DbSet<Agency> Agencies { get; set; }
+        public DbSet<Agent> Agents { get; set; }
         public DbSet<City> Cities { get; set; }
         public DbSet<CustomPermission> CustomPermissions { get; set; }
         public DbSet<Menu> Menus { get; set; }
@@ -58,6 +55,7 @@ namespace Bastis.Models
         public DbSet<State> States { get; set; }
         public DbSet<Client> Clients { get; set; }
         public DbSet<Lead> Leads { get; set; }
+        public DbSet<Photo> Photos { get; set; }
 
 
         public static ApplicationDbContext Create()

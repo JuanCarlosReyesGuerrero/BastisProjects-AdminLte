@@ -8,6 +8,8 @@ using System.Web;
 using System.Web.Mvc;
 using Bastis.Models;
 using Bastis.Models.Entities;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Bastis.Controllers
 {
@@ -18,27 +20,20 @@ namespace Bastis.Controllers
         // GET: Permissions
         public ActionResult Index()
         {
-            var permissions = db.Permissions.Include(p => p.ApplicationRole).Include(p => p.Menu);
+            if (User.Identity.IsAuthenticated)
+            {
+                if (isAdminUser())
+                {
+                    var permissions = db.Permissions.Include(p => p.ApplicationRole).Include(p => p.Menu);
+                    return View(permissions.ToList());
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
 
-            //var permissions = from p in db.Permissions
-            //                  join a in db.Roles
-            //      on p.ApplicationRoleId equals a.Id
-            //                  join m in db.Menus on p.MenuID equals m.MenuID
-            //                  select new
-            //                  {
-            //                      p.PermissionID,
-            //                      p.ApplicationRoleId,
-            //                      p.MenuID,
-            //                      p.ViewMenu,
-            //                      p.CreateOption,
-            //                      p.ReadOption,
-            //                      p.UpdateOption,
-            //                      p.DeleteOption,
-            //                      a.Name
-            //                  };
-
-
-            return View(permissions.ToList());
+            return View();
         }
 
         // GET: Permissions/Details/5
@@ -151,6 +146,42 @@ namespace Bastis.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        public Boolean isAdminUser()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                var user = User.Identity;
+                ApplicationDbContext context = new ApplicationDbContext();
+                var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+                var s = UserManager.GetRoles(user.GetUserId());
+                if (s[0].ToString() == "AppAdmin")
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            return false;
+        }
+
+        public List<Permission> ListPermissions()
+        {
+
+            //var query = _applicationDbContext.Enrollment
+            //    .Include(a => a.Course)
+            //    .Include(x => x.Student)
+            //    .ToList();
+
+            //return query;
+
+            //var permissions = db.Permissions.Include(p => p.ApplicationRole).Include(p => p.Menu);
+            var permissions = db.Permissions.ToList();
+            return permissions;
+
         }
     }
 }

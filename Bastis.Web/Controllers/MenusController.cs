@@ -30,7 +30,8 @@ namespace Bastis.Controllers
             }
             else
             {
-                return RedirectToAction("Index", "Home");
+                //return RedirectToAction("Index", "Home");
+                return RedirectToAction("Login", "Account");
             }
 
             return View();

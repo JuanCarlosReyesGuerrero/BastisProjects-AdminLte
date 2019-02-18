@@ -1,5 +1,8 @@
 ﻿using Bastis.Models;
 using Bastis.Models.Entities;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using System;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -14,8 +17,20 @@ namespace Bastis.Controllers
         // GET: Cities
         public ActionResult Index()
         {
-            var cities = db.Cities.Include(c => c.State);
-            return View(cities.ToList());
+            if (User.Identity.IsAuthenticated)
+            {
+                if (isAdminUser())
+                {
+                    var cities = db.Cities.Include(c => c.State);
+                    return View(cities.ToList());
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            return View();
         }
 
         // GET: Cities/Details/5
@@ -124,6 +139,26 @@ namespace Bastis.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        public Boolean isAdminUser()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                var user = User.Identity;
+                ApplicationDbContext context = new ApplicationDbContext();
+                var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+                var s = UserManager.GetRoles(user.GetUserId());
+                if (s[0].ToString() == "AppAdmin")
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            return false;
         }
     }
 }
