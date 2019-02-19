@@ -76,15 +76,16 @@ namespace Bastis.Migrations
             menus.ForEach(s => context.Menus.AddOrUpdate(p => p.DisplayName, s));
             context.SaveChanges();
 
-            var vRolId = "";
+            //********************************************************************************
+            var vRolId = "40850b2d-64ab-4f10-a468-a19788e04f9e";
 
-            if (context.Roles.Any(r => r.Name == "AppAdmin"))
-            {
-                var role = new ApplicationRole { Name = "AppAdmin" };
-                vRolId = role.Id;
-            }
+            //if (context.Roles.Any(r => r.Name == "AppAdmin"))
+            //{
+            //    var role = new ApplicationRole { Name = "AppAdmin" };
+            //    vRolId = role.Id;
+            //}
 
-           var Permissions = new List<Permission>
+            var Permissions = new List<Permission>
             {
                 new Permission { ApplicationRoleId = vRolId, MenuID = 1, ViewMenu = true, CreateOption = true, ReadOption = true, UpdateOption = true, DeleteOption = true },
                 new Permission { ApplicationRoleId = vRolId, MenuID = 2, ViewMenu = true, CreateOption = true, ReadOption = true, UpdateOption = true, DeleteOption = true },
@@ -97,13 +98,31 @@ namespace Bastis.Migrations
                 new Permission { ApplicationRoleId = vRolId, MenuID = 9, ViewMenu = true, CreateOption = true, ReadOption = true, UpdateOption = true, DeleteOption = true },
                 new Permission { ApplicationRoleId = vRolId, MenuID = 10, ViewMenu = true, CreateOption = true, ReadOption = true, UpdateOption = true, DeleteOption = true },
                 new Permission { ApplicationRoleId = vRolId, MenuID = 11, ViewMenu = true, CreateOption = true, ReadOption = true, UpdateOption = true, DeleteOption = true },
-                new Permission { ApplicationRoleId = vRolId, MenuID = 12, ViewMenu = true, CreateOption = true, ReadOption = true, UpdateOption = true, DeleteOption = true },
-                new Permission { ApplicationRoleId = vRolId, MenuID = 13, ViewMenu = true, CreateOption = true, ReadOption = true, UpdateOption = true, DeleteOption = true },
-                new Permission { ApplicationRoleId = vRolId, MenuID = 14, ViewMenu = true, CreateOption = true, ReadOption = true, UpdateOption = true, DeleteOption = true }
+                new Permission { ApplicationRoleId = vRolId, MenuID = 12, ViewMenu = true, CreateOption = true, ReadOption = true, UpdateOption = true, DeleteOption = true }               
             };
             Permissions.ForEach(s => context.Permissions.AddOrUpdate(p => p.MenuID, s));
             context.SaveChanges();
 
+
+
+
+            //INSERT INTO Permissions(ApplicationRoleId, MenuID, ViewMenu, CreateOption, ReadOption, UpdateOption, DeleteOption)VALUES('f73062aa-a70d-4a75-a4eb-8d1a5209f062', 1, 1, 1, 1, 1, 1);
+            //INSERT INTO Permissions(ApplicationRoleId, MenuID, ViewMenu, CreateOption, ReadOption, UpdateOption, DeleteOption)VALUES('f73062aa-a70d-4a75-a4eb-8d1a5209f062', 2, 1, 1, 1, 1, 1);
+            //INSERT INTO Permissions(ApplicationRoleId, MenuID, ViewMenu, CreateOption, ReadOption, UpdateOption, DeleteOption)VALUES('f73062aa-a70d-4a75-a4eb-8d1a5209f062', 3, 1, 1, 1, 1, 1);
+            //INSERT INTO Permissions(ApplicationRoleId, MenuID, ViewMenu, CreateOption, ReadOption, UpdateOption, DeleteOption)VALUES('f73062aa-a70d-4a75-a4eb-8d1a5209f062', 4, 1, 1, 1, 1, 1);
+            //INSERT INTO Permissions(ApplicationRoleId, MenuID, ViewMenu, CreateOption, ReadOption, UpdateOption, DeleteOption)VALUES('f73062aa-a70d-4a75-a4eb-8d1a5209f062', 5, 1, 1, 1, 1, 1);
+            //INSERT INTO Permissions(ApplicationRoleId, MenuID, ViewMenu, CreateOption, ReadOption, UpdateOption, DeleteOption)VALUES('f73062aa-a70d-4a75-a4eb-8d1a5209f062', 6, 1, 1, 1, 1, 1);
+            //INSERT INTO Permissions(ApplicationRoleId, MenuID, ViewMenu, CreateOption, ReadOption, UpdateOption, DeleteOption)VALUES('f73062aa-a70d-4a75-a4eb-8d1a5209f062', 7, 1, 1, 1, 1, 1);
+            //INSERT INTO Permissions(ApplicationRoleId, MenuID, ViewMenu, CreateOption, ReadOption, UpdateOption, DeleteOption)VALUES('f73062aa-a70d-4a75-a4eb-8d1a5209f062', 8, 1, 1, 1, 1, 1);
+            //INSERT INTO Permissions(ApplicationRoleId, MenuID, ViewMenu, CreateOption, ReadOption, UpdateOption, DeleteOption)VALUES('f73062aa-a70d-4a75-a4eb-8d1a5209f062', 9, 1, 1, 1, 1, 1);
+            //INSERT INTO Permissions(ApplicationRoleId, MenuID, ViewMenu, CreateOption, ReadOption, UpdateOption, DeleteOption)VALUES('f73062aa-a70d-4a75-a4eb-8d1a5209f062', 10, 1, 1, 1, 1, 1);
+            //INSERT INTO Permissions(ApplicationRoleId, MenuID, ViewMenu, CreateOption, ReadOption, UpdateOption, DeleteOption)VALUES('f73062aa-a70d-4a75-a4eb-8d1a5209f062', 11, 1, 1, 1, 1, 1);
+            //INSERT INTO Permissions(ApplicationRoleId, MenuID, ViewMenu, CreateOption, ReadOption, UpdateOption, DeleteOption)VALUES('f73062aa-a70d-4a75-a4eb-8d1a5209f062', 12, 1, 1, 1, 1, 1);
+
+
+
+
+            //********************************************************************************
 
             var states = new List<State>
             {
@@ -1269,7 +1288,7 @@ namespace Bastis.Migrations
                 new City{Code="624",Name="SANTA ROSALIA",UnifiedCode="99624",StateID=33,StateCode="624",Status=true},
                 new City{Code="773",Name="CUMARIBO",UnifiedCode="99773",StateID=33,StateCode="773",Status=true}
             };
-            cities.ForEach(s => context.Cities.AddOrUpdate(p => p.Code, s));
+            cities.ForEach(s => context.Cities.AddOrUpdate(p => p.UnifiedCode, s));
             context.SaveChanges();
         }
     }
