@@ -1,4 +1,5 @@
-﻿using Bastis.Models;
+﻿using Bastis.Common;
+using Bastis.Models;
 using Bastis.Models.Entities;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -8,6 +9,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using static Bastis.Common.Enums;
 
 namespace Bastis.Controllers
 {
@@ -17,14 +19,19 @@ namespace Bastis.Controllers
 
         // GET: ApplicationRoles
         public ActionResult Index()
-        {            
+        {
             if (User.Identity.IsAuthenticated)
             {
-                if (isAdminUser())
+                var PermissionUser = ListPermissions();
+
+                if (PermissionUser[0].ViewMenu)
                 {
-                  var AAA =   ListPermissions();
 
                     return View(db.IdentityRoles.ToList());
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
                 }
             }
             else
@@ -32,28 +39,60 @@ namespace Bastis.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
-            return View();
+            //return View();
         }
 
         // GET: ApplicationRoles/Details/5
         public ActionResult Details(string id)
         {
-            if (id == null)
+            if (User.Identity.IsAuthenticated)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                var PermissionUser = ListPermissions();
+
+                if (PermissionUser[0].ReadOption)
+                {
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    ApplicationRole applicationRole = db.IdentityRoles.Find(id);
+                    if (applicationRole == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    return View(applicationRole);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
             }
-            ApplicationRole applicationRole = db.IdentityRoles.Find(id);
-            if (applicationRole == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Login", "Account");
             }
-            return View(applicationRole);
         }
 
         // GET: ApplicationRoles/Create
         public ActionResult Create()
         {
-            return View();
+            if (User.Identity.IsAuthenticated)
+            {
+                var PermissionUser = ListPermissions();
+
+                if (PermissionUser[0].CreateOption)
+                {
+                    return View();
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
         }
 
         // POST: ApplicationRoles/Create
@@ -63,29 +102,61 @@ namespace Bastis.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Name,Description")] ApplicationRole applicationRole)
         {
-            if (ModelState.IsValid)
+            if (User.Identity.IsAuthenticated)
             {
-                db.Roles.Add(applicationRole);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+                var PermissionUser = ListPermissions();
 
-            return View(applicationRole);
+                if (PermissionUser[0].CreateOption)
+                {
+                    if (ModelState.IsValid)
+                    {
+                        db.Roles.Add(applicationRole);
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+
+                    return View(applicationRole);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
         }
 
         // GET: ApplicationRoles/Edit/5
         public ActionResult Edit(string id)
         {
-            if (id == null)
+            if (User.Identity.IsAuthenticated)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                var PermissionUser = ListPermissions();
+
+                if (PermissionUser[0].UpdateOption)
+                {
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    ApplicationRole applicationRole = db.IdentityRoles.Find(id);
+                    if (applicationRole == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    return View(applicationRole);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
             }
-            ApplicationRole applicationRole = db.IdentityRoles.Find(id);
-            if (applicationRole == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Login", "Account");
             }
-            return View(applicationRole);
         }
 
         // POST: ApplicationRoles/Edit/5
@@ -95,28 +166,60 @@ namespace Bastis.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Name,Description")] ApplicationRole applicationRole)
         {
-            if (ModelState.IsValid)
+            if (User.Identity.IsAuthenticated)
             {
-                db.Entry(applicationRole).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                var PermissionUser = ListPermissions();
+
+                if (PermissionUser[0].UpdateOption)
+                {
+                    if (ModelState.IsValid)
+                    {
+                        db.Entry(applicationRole).State = EntityState.Modified;
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                    return View(applicationRole);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
             }
-            return View(applicationRole);
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
         }
 
         // GET: ApplicationRoles/Delete/5
         public ActionResult Delete(string id)
         {
-            if (id == null)
+            if (User.Identity.IsAuthenticated)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                var PermissionUser = ListPermissions();
+
+                if (PermissionUser[0].DeleteOption)
+                {
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    ApplicationRole applicationRole = db.IdentityRoles.Find(id);
+                    if (applicationRole == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    return View(applicationRole);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
             }
-            ApplicationRole applicationRole = db.IdentityRoles.Find(id);
-            if (applicationRole == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Login", "Account");
             }
-            return View(applicationRole);
         }
 
         // POST: ApplicationRoles/Delete/5
@@ -124,10 +227,26 @@ namespace Bastis.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
-            ApplicationRole applicationRole = db.IdentityRoles.Find(id);
-            db.Roles.Remove(applicationRole);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if (User.Identity.IsAuthenticated)
+            {
+                var PermissionUser = ListPermissions();
+
+                if (PermissionUser[0].DeleteOption)
+                {
+                    ApplicationRole applicationRole = db.IdentityRoles.Find(id);
+                    db.Roles.Remove(applicationRole);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
         }
 
         protected override void Dispose(bool disposing)
@@ -139,43 +258,19 @@ namespace Bastis.Controllers
             base.Dispose(disposing);
         }
 
-        public Boolean isAdminUser()
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                var user = User.Identity;
-                ApplicationDbContext context = new ApplicationDbContext();
-                var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
-                var s = UserManager.GetRoles(user.GetUserId());
-                if (s[0].ToString() == "AppAdmin")
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            return false;
-        }
-
         public List<Permission> ListPermissions()
         {
-            PermissionsController permiso = new PermissionsController
+            PermissionsController permiso = new PermissionsController();
 
-                permiso.Details(1).
+            var user = User.Identity;
+            ApplicationDbContext context = new ApplicationDbContext();
+            var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+            var s = UserManager.GetRoles(user.GetUserId());
+            string vRolId = s[0].ToString();
 
-            //var query = _applicationDbContext.Enrollment
-            //    .Include(a => a.Course)
-            //    .Include(x => x.Student)
-            //    .ToList();
+            var usersPerRoles = permiso.ListPermissions(vRolId, Convert.ToInt32(MenuOptions.States));
 
-            //return query;
-
-            //var permissions = db.Permissions.Include(p => p.ApplicationRole).Include(p => p.Menu);
-            var permissions = db.Permissions.ToList();
-            return permissions;
-
+            return usersPerRoles;
         }
 
     }

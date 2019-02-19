@@ -95,7 +95,7 @@ namespace Bastis.Migrations
                 new State{Code="99",Name="VICHADA",Status=true}
             };
 
-            states.ForEach(s => context.States.Add(s));
+            states.ForEach(s => context.States.AddOrUpdate(p => p.Code, s));
             context.SaveChanges();
 
 
@@ -1222,7 +1222,7 @@ namespace Bastis.Migrations
                 new City{Code="624",Name="SANTA ROSALIA",UnifiedCode="99624",StateID=33,StateCode="624",Status=true},
                 new City{Code="773",Name="CUMARIBO",UnifiedCode="99773",StateID=33,StateCode="773",Status=true}
             };
-            cities.ForEach(s => context.Cities.Add(s));
+            cities.ForEach(s => context.Cities.AddOrUpdate(p => p.Code, s));
             context.SaveChanges();
         }
     }

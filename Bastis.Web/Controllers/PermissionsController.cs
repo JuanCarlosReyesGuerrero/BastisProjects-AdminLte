@@ -147,41 +147,19 @@ namespace Bastis.Controllers
             }
             base.Dispose(disposing);
         }
+        
 
-        public Boolean isAdminUser()
+        public List<Permission> ListPermissions(string vRolId, int vMenuId)
         {
-            if (User.Identity.IsAuthenticated)
+            var listPermissions = db.Permissions.Include(p => p.ApplicationRole);
+
+            if (!String.IsNullOrEmpty(vRolId))
             {
-                var user = User.Identity;
-                ApplicationDbContext context = new ApplicationDbContext();
-                var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
-                var s = UserManager.GetRoles(user.GetUserId());
-                if (s[0].ToString() == "AppAdmin")
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                listPermissions = listPermissions.Where(x => x.ApplicationRole.Name.Contains(vRolId)
+                                       && x.MenuID.Equals(vMenuId));
             }
-            return false;
-        }
 
-        public List<Permission> ListPermissions()
-        {
-
-            //var query = _applicationDbContext.Enrollment
-            //    .Include(a => a.Course)
-            //    .Include(x => x.Student)
-            //    .ToList();
-
-            //return query;
-
-            //var permissions = db.Permissions.Include(p => p.ApplicationRole).Include(p => p.Menu);
-            var permissions = db.Permissions.ToList();
-            return permissions;
-
+            return listPermissions.ToList();
         }
     }
 }
