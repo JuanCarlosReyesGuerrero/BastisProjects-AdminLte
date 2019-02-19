@@ -1,0 +1,57 @@
+﻿@model IEnumerable<Bastis.Models.Entities.Photo>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.URLPhoto)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserRegisters)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateRegister)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserModifies)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateModified)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.URLPhoto)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserRegisters)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateRegister)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserModifies)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateModified)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.PhotoID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.PhotoID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.PhotoID })
+        </td>
+    </tr>
+}
+
+</table>

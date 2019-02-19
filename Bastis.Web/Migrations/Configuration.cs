@@ -58,6 +58,53 @@ namespace Bastis.Migrations
                 manager.AddToRole(user.Id, "AppAdmin");
             }
 
+            var menus = new List<Menu>
+            {
+                new Menu{DisplayName="Administration",ParentMenuID=0,OrderNumber=1,MenuURL="#",MenuIcon="fa fa-briefcase"},
+                new Menu{DisplayName="Configuration",ParentMenuID=0,OrderNumber=2,MenuURL="#",MenuIcon="fa fa-briefcase"},
+                new Menu{DisplayName="Agencies",ParentMenuID=1,OrderNumber=1,MenuURL="/Agencies",MenuIcon="fa fa-circle-o"},
+                new Menu{DisplayName="Properties",ParentMenuID=1,OrderNumber=2,MenuURL="/Properties",MenuIcon="fa fa-circle-o"},
+                new Menu{DisplayName="Agents",ParentMenuID=1,OrderNumber=3,MenuURL="/Agents",MenuIcon="fa fa-circle-o"},
+                new Menu{DisplayName="Photos",ParentMenuID=1,OrderNumber=4,MenuURL="/Photos",MenuIcon="fa fa-circle-o"},
+                new Menu{DisplayName="States",ParentMenuID=2,OrderNumber=1,MenuURL="/States",MenuIcon="fa fa-circle-o"},
+                new Menu{DisplayName="Cities",ParentMenuID=2,OrderNumber=2,MenuURL="/Cities",MenuIcon="fa fa-circle-o"},
+                new Menu{DisplayName="Permissions",ParentMenuID=2,OrderNumber=3,MenuURL="/Permissions",MenuIcon="fa fa-circle-o"},
+                new Menu{DisplayName="Menus",ParentMenuID=2,OrderNumber=4,MenuURL="/Menus",MenuIcon="fa fa-circle-o"},
+                new Menu{DisplayName="ApplicationRoles",ParentMenuID=2,OrderNumber=5,MenuURL="/ApplicationRoles",MenuIcon="fa fa-circle-o"},
+                new Menu{DisplayName="ApplicationUsers",ParentMenuID=2,OrderNumber=6,MenuURL="/ApplicationUsers",MenuIcon="fa fa-circle-o"}
+            };
+            menus.ForEach(s => context.Menus.AddOrUpdate(p => p.DisplayName, s));
+            context.SaveChanges();
+
+            var vRolId = "";
+
+            if (context.Roles.Any(r => r.Name == "AppAdmin"))
+            {
+                var role = new ApplicationRole { Name = "AppAdmin" };
+                vRolId = role.Id;
+            }
+
+           var Permissions = new List<Permission>
+            {
+                new Permission { ApplicationRoleId = vRolId, MenuID = 1, ViewMenu = true, CreateOption = true, ReadOption = true, UpdateOption = true, DeleteOption = true },
+                new Permission { ApplicationRoleId = vRolId, MenuID = 2, ViewMenu = true, CreateOption = true, ReadOption = true, UpdateOption = true, DeleteOption = true },
+                new Permission { ApplicationRoleId = vRolId, MenuID = 3, ViewMenu = true, CreateOption = true, ReadOption = true, UpdateOption = true, DeleteOption = true },
+                new Permission { ApplicationRoleId = vRolId, MenuID = 4, ViewMenu = true, CreateOption = true, ReadOption = true, UpdateOption = true, DeleteOption = true },
+                new Permission { ApplicationRoleId = vRolId, MenuID = 5, ViewMenu = true, CreateOption = true, ReadOption = true, UpdateOption = true, DeleteOption = true },
+                new Permission { ApplicationRoleId = vRolId, MenuID = 6, ViewMenu = true, CreateOption = true, ReadOption = true, UpdateOption = true, DeleteOption = true },
+                new Permission { ApplicationRoleId = vRolId, MenuID = 7, ViewMenu = true, CreateOption = true, ReadOption = true, UpdateOption = true, DeleteOption = true },
+                new Permission { ApplicationRoleId = vRolId, MenuID = 8, ViewMenu = true, CreateOption = true, ReadOption = true, UpdateOption = true, DeleteOption = true },
+                new Permission { ApplicationRoleId = vRolId, MenuID = 9, ViewMenu = true, CreateOption = true, ReadOption = true, UpdateOption = true, DeleteOption = true },
+                new Permission { ApplicationRoleId = vRolId, MenuID = 10, ViewMenu = true, CreateOption = true, ReadOption = true, UpdateOption = true, DeleteOption = true },
+                new Permission { ApplicationRoleId = vRolId, MenuID = 11, ViewMenu = true, CreateOption = true, ReadOption = true, UpdateOption = true, DeleteOption = true },
+                new Permission { ApplicationRoleId = vRolId, MenuID = 12, ViewMenu = true, CreateOption = true, ReadOption = true, UpdateOption = true, DeleteOption = true },
+                new Permission { ApplicationRoleId = vRolId, MenuID = 13, ViewMenu = true, CreateOption = true, ReadOption = true, UpdateOption = true, DeleteOption = true },
+                new Permission { ApplicationRoleId = vRolId, MenuID = 14, ViewMenu = true, CreateOption = true, ReadOption = true, UpdateOption = true, DeleteOption = true }
+            };
+            Permissions.ForEach(s => context.Permissions.AddOrUpdate(p => p.MenuID, s));
+            context.SaveChanges();
+
+
             var states = new List<State>
             {
                 new State{Code="05",Name="ANTIOQUIA",Status=true},

@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
-using System.Net;
-using System.Web;
-using System.Web.Mvc;
+﻿using Bastis.Common;
 using Bastis.Models;
 using Bastis.Models.Entities;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
+using System;
+using System.Data.Entity;
+using System.Linq;
+using System.Net;
+using System.Web.Mvc;
+using static Bastis.Common.Enums;
 
 namespace Bastis.Controllers
 {
@@ -17,46 +15,85 @@ namespace Bastis.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        Autentication userAutentication = new Autentication();
+
         // GET: Permissions
         public ActionResult Index()
         {
             if (User.Identity.IsAuthenticated)
             {
-                if (isAdminUser())
+                var PermissionUser = userAutentication.ListPermissions(User.Identity.GetUserId(), Convert.ToInt32(MenuOptions.Permissions));
+
+                if (PermissionUser[0].ViewMenu)
                 {
+
                     var permissions = db.Permissions.Include(p => p.ApplicationRole).Include(p => p.Menu);
                     return View(permissions.ToList());
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
                 }
             }
             else
             {
                 return RedirectToAction("Login", "Account");
             }
-
-            return View();
         }
 
         // GET: Permissions/Details/5
         public ActionResult Details(int? id)
         {
-            if (id == null)
+            if (User.Identity.IsAuthenticated)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                var PermissionUser = userAutentication.ListPermissions(User.Identity.GetUserId(), Convert.ToInt32(MenuOptions.Permissions));
+
+                if (PermissionUser[0].ReadOption)
+                {
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    Permission permission = db.Permissions.Find(id);
+                    if (permission == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    return View(permission);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
             }
-            Permission permission = db.Permissions.Find(id);
-            if (permission == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Login", "Account");
             }
-            return View(permission);
         }
 
         // GET: Permissions/Create
         public ActionResult Create()
         {
-            ViewBag.ApplicationRoleId = new SelectList(db.Roles, "Id", "Name");
-            ViewBag.MenuID = new SelectList(db.Menus, "MenuID", "DisplayName");
-            return View();
+            if (User.Identity.IsAuthenticated)
+            {
+                var PermissionUser = userAutentication.ListPermissions(User.Identity.GetUserId(), Convert.ToInt32(MenuOptions.Permissions));
+
+                if (PermissionUser[0].CreateOption)
+                {
+                    ViewBag.ApplicationRoleId = new SelectList(db.Roles, "Id", "Name");
+                    ViewBag.MenuID = new SelectList(db.Menus, "MenuID", "DisplayName");
+                    return View();
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
         }
 
         // POST: Permissions/Create
@@ -66,33 +103,65 @@ namespace Bastis.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "PermissionID,ApplicationRoleId,MenuID,ViewMenu,CreateOption,ReadOption,UpdateOption,DeleteOption")] Permission permission)
         {
-            if (ModelState.IsValid)
+            if (User.Identity.IsAuthenticated)
             {
-                db.Permissions.Add(permission);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+                var PermissionUser = userAutentication.ListPermissions(User.Identity.GetUserId(), Convert.ToInt32(MenuOptions.Permissions));
 
-            ViewBag.ApplicationRoleId = new SelectList(db.Roles, "Id", "Name", permission.ApplicationRoleId);
-            ViewBag.MenuID = new SelectList(db.Menus, "MenuID", "DisplayName", permission.MenuID);
-            return View(permission);
+                if (PermissionUser[0].CreateOption)
+                {
+                    if (ModelState.IsValid)
+                    {
+                        db.Permissions.Add(permission);
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+
+                    ViewBag.ApplicationRoleId = new SelectList(db.Roles, "Id", "Name", permission.ApplicationRoleId);
+                    ViewBag.MenuID = new SelectList(db.Menus, "MenuID", "DisplayName", permission.MenuID);
+                    return View(permission);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
         }
 
         // GET: Permissions/Edit/5
         public ActionResult Edit(int? id)
         {
-            if (id == null)
+            if (User.Identity.IsAuthenticated)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                var PermissionUser = userAutentication.ListPermissions(User.Identity.GetUserId(), Convert.ToInt32(MenuOptions.Permissions));
+
+                if (PermissionUser[0].UpdateOption)
+                {
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    Permission permission = db.Permissions.Find(id);
+                    if (permission == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    ViewBag.ApplicationRoleId = new SelectList(db.Roles, "Id", "Name", permission.ApplicationRoleId);
+                    ViewBag.MenuID = new SelectList(db.Menus, "MenuID", "DisplayName", permission.MenuID);
+                    return View(permission);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
             }
-            Permission permission = db.Permissions.Find(id);
-            if (permission == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Login", "Account");
             }
-            ViewBag.ApplicationRoleId = new SelectList(db.Roles, "Id", "Name", permission.ApplicationRoleId);
-            ViewBag.MenuID = new SelectList(db.Menus, "MenuID", "DisplayName", permission.MenuID);
-            return View(permission);
         }
 
         // POST: Permissions/Edit/5
@@ -102,30 +171,62 @@ namespace Bastis.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "PermissionID,ApplicationRoleId,MenuID,ViewMenu,CreateOption,ReadOption,UpdateOption,DeleteOption")] Permission permission)
         {
-            if (ModelState.IsValid)
+            if (User.Identity.IsAuthenticated)
             {
-                db.Entry(permission).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                var PermissionUser = userAutentication.ListPermissions(User.Identity.GetUserId(), Convert.ToInt32(MenuOptions.Permissions));
+
+                if (PermissionUser[0].UpdateOption)
+                {
+                    if (ModelState.IsValid)
+                    {
+                        db.Entry(permission).State = EntityState.Modified;
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                    ViewBag.ApplicationRoleId = new SelectList(db.Roles, "Id", "Name", permission.ApplicationRoleId);
+                    ViewBag.MenuID = new SelectList(db.Menus, "MenuID", "DisplayName", permission.MenuID);
+                    return View(permission);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
             }
-            ViewBag.ApplicationRoleId = new SelectList(db.Roles, "Id", "Name", permission.ApplicationRoleId);
-            ViewBag.MenuID = new SelectList(db.Menus, "MenuID", "DisplayName", permission.MenuID);
-            return View(permission);
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
         }
 
         // GET: Permissions/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null)
+            if (User.Identity.IsAuthenticated)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                var PermissionUser = userAutentication.ListPermissions(User.Identity.GetUserId(), Convert.ToInt32(MenuOptions.Permissions));
+
+                if (PermissionUser[0].DeleteOption)
+                {
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    Permission permission = db.Permissions.Find(id);
+                    if (permission == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    return View(permission);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
             }
-            Permission permission = db.Permissions.Find(id);
-            if (permission == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Login", "Account");
             }
-            return View(permission);
         }
 
         // POST: Permissions/Delete/5
@@ -133,10 +234,26 @@ namespace Bastis.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Permission permission = db.Permissions.Find(id);
-            db.Permissions.Remove(permission);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if (User.Identity.IsAuthenticated)
+            {
+                var PermissionUser = userAutentication.ListPermissions(User.Identity.GetUserId(), Convert.ToInt32(MenuOptions.Permissions));
+
+                if (PermissionUser[0].DeleteOption)
+                {
+                    Permission permission = db.Permissions.Find(id);
+                    db.Permissions.Remove(permission);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
         }
 
         protected override void Dispose(bool disposing)
@@ -146,20 +263,6 @@ namespace Bastis.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }
-        
-
-        public List<Permission> ListPermissions(string vRolId, int vMenuId)
-        {
-            var listPermissions = db.Permissions.Include(p => p.ApplicationRole);
-
-            if (!String.IsNullOrEmpty(vRolId))
-            {
-                listPermissions = listPermissions.Where(x => x.ApplicationRole.Name.Contains(vRolId)
-                                       && x.MenuID.Equals(vMenuId));
-            }
-
-            return listPermissions.ToList();
         }
     }
 }

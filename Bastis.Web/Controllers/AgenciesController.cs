@@ -1,12 +1,13 @@
-﻿using Bastis.Models;
+﻿using Bastis.Common;
+using Bastis.Models;
 using Bastis.Models.Entities;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using static Bastis.Common.Enums;
 
 namespace Bastis.Controllers
 {
@@ -14,43 +15,82 @@ namespace Bastis.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        Autentication userAutentication = new Autentication();
+
         // GET: Agencies
         public ActionResult Index()
-        {            
+        {
             if (User.Identity.IsAuthenticated)
             {
-                if (isAdminUser())
+                var PermissionUser = userAutentication.ListPermissions(User.Identity.GetUserId(), Convert.ToInt32(MenuOptions.Agencies));
+
+                if (PermissionUser[0].ViewMenu)
                 {
+
                     return View(db.Agencies.ToList());
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
                 }
             }
             else
             {
                 return RedirectToAction("Login", "Account");
             }
-
-            return View();
         }
 
         // GET: Agencies/Details/5
         public ActionResult Details(int? id)
         {
-            if (id == null)
+            if (User.Identity.IsAuthenticated)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                var PermissionUser = userAutentication.ListPermissions(User.Identity.GetUserId(), Convert.ToInt32(MenuOptions.Agencies));
+
+                if (PermissionUser[0].ReadOption)
+                {
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    Agency agency = db.Agencies.Find(id);
+                    if (agency == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    return View(agency);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
             }
-            Agency agency = db.Agencies.Find(id);
-            if (agency == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Login", "Account");
             }
-            return View(agency);
         }
 
         // GET: Agencies/Create
         public ActionResult Create()
         {
-            return View();
+            if (User.Identity.IsAuthenticated)
+            {
+                var PermissionUser = userAutentication.ListPermissions(User.Identity.GetUserId(), Convert.ToInt32(MenuOptions.Agencies));
+
+                if (PermissionUser[0].CreateOption)
+                {
+                    return View();
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
         }
 
         // POST: Agencies/Create
@@ -60,29 +100,61 @@ namespace Bastis.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "AgencyID,UserRegisters,DateRegister,UserModifies,DateModified")] Agency agency)
         {
-            if (ModelState.IsValid)
+            if (User.Identity.IsAuthenticated)
             {
-                db.Agencies.Add(agency);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+                var PermissionUser = userAutentication.ListPermissions(User.Identity.GetUserId(), Convert.ToInt32(MenuOptions.Agencies));
 
-            return View(agency);
+                if (PermissionUser[0].CreateOption)
+                {
+                    if (ModelState.IsValid)
+                    {
+                        db.Agencies.Add(agency);
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+
+                    return View(agency);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
         }
 
         // GET: Agencies/Edit/5
         public ActionResult Edit(int? id)
         {
-            if (id == null)
+            if (User.Identity.IsAuthenticated)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                var PermissionUser = userAutentication.ListPermissions(User.Identity.GetUserId(), Convert.ToInt32(MenuOptions.Agencies));
+
+                if (PermissionUser[0].UpdateOption)
+                {
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    Agency agency = db.Agencies.Find(id);
+                    if (agency == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    return View(agency);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
             }
-            Agency agency = db.Agencies.Find(id);
-            if (agency == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Login", "Account");
             }
-            return View(agency);
         }
 
         // POST: Agencies/Edit/5
@@ -92,28 +164,60 @@ namespace Bastis.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "AgencyID,UserRegisters,DateRegister,UserModifies,DateModified")] Agency agency)
         {
-            if (ModelState.IsValid)
+            if (User.Identity.IsAuthenticated)
             {
-                db.Entry(agency).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                var PermissionUser = userAutentication.ListPermissions(User.Identity.GetUserId(), Convert.ToInt32(MenuOptions.Agencies));
+
+                if (PermissionUser[0].UpdateOption)
+                {
+                    if (ModelState.IsValid)
+                    {
+                        db.Entry(agency).State = EntityState.Modified;
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                    return View(agency);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
             }
-            return View(agency);
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
         }
 
         // GET: Agencies/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null)
+            if (User.Identity.IsAuthenticated)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                var PermissionUser = userAutentication.ListPermissions(User.Identity.GetUserId(), Convert.ToInt32(MenuOptions.Agencies));
+
+                if (PermissionUser[0].DeleteOption)
+                {
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    Agency agency = db.Agencies.Find(id);
+                    if (agency == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    return View(agency);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
             }
-            Agency agency = db.Agencies.Find(id);
-            if (agency == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Login", "Account");
             }
-            return View(agency);
         }
 
         // POST: Agencies/Delete/5
@@ -121,10 +225,26 @@ namespace Bastis.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Agency agency = db.Agencies.Find(id);
-            db.Agencies.Remove(agency);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if (User.Identity.IsAuthenticated)
+            {
+                var PermissionUser = userAutentication.ListPermissions(User.Identity.GetUserId(), Convert.ToInt32(MenuOptions.Agencies));
+
+                if (PermissionUser[0].DeleteOption)
+                {
+                    Agency agency = db.Agencies.Find(id);
+                    db.Agencies.Remove(agency);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
         }
 
         protected override void Dispose(bool disposing)
@@ -134,31 +254,6 @@ namespace Bastis.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }
-
-        public Boolean isAdminUser()
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                var user = User.Identity;
-                ApplicationDbContext context = new ApplicationDbContext();
-                var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
-                var s = UserManager.GetRoles(user.GetUserId());
-                if (s[0].ToString() == "AppAdmin")
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            return false;
-        }
-
-        public Boolean havePermissions()
-        {
-            return false;
         }
     }
 }

@@ -1,12 +1,13 @@
-﻿using Bastis.Models;
+﻿using Bastis.Common;
+using Bastis.Models;
 using Bastis.Models.Entities;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using static Bastis.Common.Enums;
 
 namespace Bastis.Controllers
 {
@@ -14,43 +15,81 @@ namespace Bastis.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        Autentication userAutentication = new Autentication();
+
         // GET: Properties
         public ActionResult Index()
-        {            
+        {
             if (User.Identity.IsAuthenticated)
             {
-                if (isAdminUser())
+                var PermissionUser = userAutentication.ListPermissions(User.Identity.GetUserId(), Convert.ToInt32(MenuOptions.Properties));
+
+                if (PermissionUser[0].ViewMenu)
                 {
                     return View(db.Properties.ToList());
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
                 }
             }
             else
             {
                 return RedirectToAction("Login", "Account");
             }
-
-            return View();
         }
 
         // GET: Properties/Details/5
         public ActionResult Details(int? id)
         {
-            if (id == null)
+            if (User.Identity.IsAuthenticated)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                var PermissionUser = userAutentication.ListPermissions(User.Identity.GetUserId(), Convert.ToInt32(MenuOptions.Properties));
+
+                if (PermissionUser[0].ReadOption)
+                {
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    Property property = db.Properties.Find(id);
+                    if (property == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    return View(property);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
             }
-            Property property = db.Properties.Find(id);
-            if (property == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Login", "Account");
             }
-            return View(property);
         }
 
         // GET: Properties/Create
         public ActionResult Create()
         {
-            return View();
+            if (User.Identity.IsAuthenticated)
+            {
+                var PermissionUser = userAutentication.ListPermissions(User.Identity.GetUserId(), Convert.ToInt32(MenuOptions.Properties));
+
+                if (PermissionUser[0].CreateOption)
+                {
+                    return View();
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
         }
 
         // POST: Properties/Create
@@ -60,29 +99,61 @@ namespace Bastis.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "PropertyID,Title,Description,TypeID,StatusID,Location,Bedrooms,Bathrooms,Floors,Garages,Area,Size,SaleRentPrice,BeforePriceLabel,AfterPriceLabel,VideoURL,PropertyFeatures,PropertyGallery,Address,CountryID,CityID,StateID,ZipPostalCode,Neighborhood,PropertyIdentification,DepartamentID,UserRegisters,DateRegister,UserModifies,DateModified")] Property property)
         {
-            if (ModelState.IsValid)
+            if (User.Identity.IsAuthenticated)
             {
-                db.Properties.Add(property);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+                var PermissionUser = userAutentication.ListPermissions(User.Identity.GetUserId(), Convert.ToInt32(MenuOptions.Properties));
 
-            return View(property);
+                if (PermissionUser[0].CreateOption)
+                {
+                    if (ModelState.IsValid)
+                    {
+                        db.Properties.Add(property);
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+
+                    return View(property);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
         }
 
         // GET: Properties/Edit/5
         public ActionResult Edit(int? id)
         {
-            if (id == null)
+            if (User.Identity.IsAuthenticated)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                var PermissionUser = userAutentication.ListPermissions(User.Identity.GetUserId(), Convert.ToInt32(MenuOptions.Properties));
+
+                if (PermissionUser[0].UpdateOption)
+                {
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    Property property = db.Properties.Find(id);
+                    if (property == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    return View(property);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
             }
-            Property property = db.Properties.Find(id);
-            if (property == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Login", "Account");
             }
-            return View(property);
         }
 
         // POST: Properties/Edit/5
@@ -92,28 +163,60 @@ namespace Bastis.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "PropertyID,Title,Description,TypeID,StatusID,Location,Bedrooms,Bathrooms,Floors,Garages,Area,Size,SaleRentPrice,BeforePriceLabel,AfterPriceLabel,VideoURL,PropertyFeatures,PropertyGallery,Address,CountryID,CityID,StateID,ZipPostalCode,Neighborhood,PropertyIdentification,DepartamentID,UserRegisters,DateRegister,UserModifies,DateModified")] Property property)
         {
-            if (ModelState.IsValid)
+            if (User.Identity.IsAuthenticated)
             {
-                db.Entry(property).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                var PermissionUser = userAutentication.ListPermissions(User.Identity.GetUserId(), Convert.ToInt32(MenuOptions.Properties));
+
+                if (PermissionUser[0].UpdateOption)
+                {
+                    if (ModelState.IsValid)
+                    {
+                        db.Entry(property).State = EntityState.Modified;
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                    return View(property);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
             }
-            return View(property);
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
         }
 
         // GET: Properties/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null)
+            if (User.Identity.IsAuthenticated)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                var PermissionUser = userAutentication.ListPermissions(User.Identity.GetUserId(), Convert.ToInt32(MenuOptions.Properties));
+
+                if (PermissionUser[0].DeleteOption)
+                {
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    Property property = db.Properties.Find(id);
+                    if (property == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    return View(property);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
             }
-            Property property = db.Properties.Find(id);
-            if (property == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Login", "Account");
             }
-            return View(property);
         }
 
         // POST: Properties/Delete/5
@@ -121,10 +224,26 @@ namespace Bastis.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Property property = db.Properties.Find(id);
-            db.Properties.Remove(property);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if (User.Identity.IsAuthenticated)
+            {
+                var PermissionUser = userAutentication.ListPermissions(User.Identity.GetUserId(), Convert.ToInt32(MenuOptions.Properties));
+
+                if (PermissionUser[0].DeleteOption)
+                {
+                    Property property = db.Properties.Find(id);
+                    db.Properties.Remove(property);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
         }
 
         protected override void Dispose(bool disposing)
@@ -134,26 +253,6 @@ namespace Bastis.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }
-
-        public Boolean isAdminUser()
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                var user = User.Identity;
-                ApplicationDbContext context = new ApplicationDbContext();
-                var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
-                var s = UserManager.GetRoles(user.GetUserId());
-                if (s[0].ToString() == "AppAdmin")
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            return false;
         }
     }
 }

@@ -9,13 +9,18 @@ namespace Bastis.Common
     {
         public enum MenuOptions
         {
-            
-            States = 2,
-            
-            //Spoiler = 0x02,
-            //FogLights = 0x04,
-            
-            //TintedWindows = 0x08,
+            Administration = 1,
+            Configuration = 2,
+            Agencies = 3,
+            Properties = 4,
+            Agents = 5,
+            Photos = 6,
+            States = 7,
+            Cities = 8,
+            Permissions = 9,
+            Menus = 1,
+            ApplicationRoles = 11,
+            ApplicationUsers = 12,
         }
     }
 }

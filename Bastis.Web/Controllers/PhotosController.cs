@@ -1,5 +1,6 @@
 ﻿using Bastis.Common;
 using Bastis.Models;
+using Bastis.Models.Entities;
 using Microsoft.AspNet.Identity;
 using System;
 using System.Data.Entity;
@@ -10,23 +11,22 @@ using static Bastis.Common.Enums;
 
 namespace Bastis.Controllers
 {
-    public class ApplicationRolesController : Controller
+    public class PhotosController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
         Autentication userAutentication = new Autentication();
 
-        // GET: ApplicationRoles
+        // GET: Photos
         public ActionResult Index()
         {
             if (User.Identity.IsAuthenticated)
             {
-                var PermissionUser = userAutentication.ListPermissions(User.Identity.GetUserId(), Convert.ToInt32(MenuOptions.ApplicationRoles));
+                var PermissionUser = userAutentication.ListPermissions(User.Identity.GetUserId(), Convert.ToInt32(MenuOptions.Photos));
 
                 if (PermissionUser[0].ViewMenu)
                 {
-
-                    return View(db.IdentityRoles.ToList());
+                    return View(db.Photos.ToList());
                 }
                 else
                 {
@@ -39,12 +39,12 @@ namespace Bastis.Controllers
             }
         }
 
-        // GET: ApplicationRoles/Details/5
-        public ActionResult Details(string id)
+        // GET: Photos/Details/5
+        public ActionResult Details(Guid? id)
         {
             if (User.Identity.IsAuthenticated)
             {
-                var PermissionUser = userAutentication.ListPermissions(User.Identity.GetUserId(), Convert.ToInt32(MenuOptions.ApplicationRoles));
+                var PermissionUser = userAutentication.ListPermissions(User.Identity.GetUserId(), Convert.ToInt32(MenuOptions.Photos));
 
                 if (PermissionUser[0].ReadOption)
                 {
@@ -52,12 +52,12 @@ namespace Bastis.Controllers
                     {
                         return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                     }
-                    ApplicationRole applicationRole = db.IdentityRoles.Find(id);
-                    if (applicationRole == null)
+                    Photo photo = db.Photos.Find(id);
+                    if (photo == null)
                     {
                         return HttpNotFound();
                     }
-                    return View(applicationRole);
+                    return View(photo);
                 }
                 else
                 {
@@ -70,12 +70,12 @@ namespace Bastis.Controllers
             }
         }
 
-        // GET: ApplicationRoles/Create
+        // GET: Photos/Create
         public ActionResult Create()
         {
             if (User.Identity.IsAuthenticated)
             {
-                var PermissionUser = userAutentication.ListPermissions(User.Identity.GetUserId(), Convert.ToInt32(MenuOptions.ApplicationRoles));
+                var PermissionUser = userAutentication.ListPermissions(User.Identity.GetUserId(), Convert.ToInt32(MenuOptions.Photos));
 
                 if (PermissionUser[0].CreateOption)
                 {
@@ -92,27 +92,28 @@ namespace Bastis.Controllers
             }
         }
 
-        // POST: ApplicationRoles/Create
+        // POST: Photos/Create
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Description")] ApplicationRole applicationRole)
+        public ActionResult Create([Bind(Include = "PhotoID,URLPhoto,UserRegisters,DateRegister,UserModifies,DateModified")] Photo photo)
         {
             if (User.Identity.IsAuthenticated)
             {
-                var PermissionUser = userAutentication.ListPermissions(User.Identity.GetUserId(), Convert.ToInt32(MenuOptions.ApplicationRoles));
+                var PermissionUser = userAutentication.ListPermissions(User.Identity.GetUserId(), Convert.ToInt32(MenuOptions.Photos));
 
                 if (PermissionUser[0].CreateOption)
                 {
                     if (ModelState.IsValid)
                     {
-                        db.Roles.Add(applicationRole);
+                        photo.PhotoID = Guid.NewGuid();
+                        db.Photos.Add(photo);
                         db.SaveChanges();
                         return RedirectToAction("Index");
                     }
 
-                    return View(applicationRole);
+                    return View(photo);
                 }
                 else
                 {
@@ -125,12 +126,12 @@ namespace Bastis.Controllers
             }
         }
 
-        // GET: ApplicationRoles/Edit/5
-        public ActionResult Edit(string id)
+        // GET: Photos/Edit/5
+        public ActionResult Edit(Guid? id)
         {
             if (User.Identity.IsAuthenticated)
             {
-                var PermissionUser = userAutentication.ListPermissions(User.Identity.GetUserId(), Convert.ToInt32(MenuOptions.ApplicationRoles));
+                var PermissionUser = userAutentication.ListPermissions(User.Identity.GetUserId(), Convert.ToInt32(MenuOptions.Photos));
 
                 if (PermissionUser[0].UpdateOption)
                 {
@@ -138,12 +139,12 @@ namespace Bastis.Controllers
                     {
                         return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                     }
-                    ApplicationRole applicationRole = db.IdentityRoles.Find(id);
-                    if (applicationRole == null)
+                    Photo photo = db.Photos.Find(id);
+                    if (photo == null)
                     {
                         return HttpNotFound();
                     }
-                    return View(applicationRole);
+                    return View(photo);
                 }
                 else
                 {
@@ -156,26 +157,26 @@ namespace Bastis.Controllers
             }
         }
 
-        // POST: ApplicationRoles/Edit/5
+        // POST: Photos/Edit/5
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Description")] ApplicationRole applicationRole)
+        public ActionResult Edit([Bind(Include = "PhotoID,URLPhoto,UserRegisters,DateRegister,UserModifies,DateModified")] Photo photo)
         {
             if (User.Identity.IsAuthenticated)
             {
-                var PermissionUser = userAutentication.ListPermissions(User.Identity.GetUserId(), Convert.ToInt32(MenuOptions.ApplicationRoles));
+                var PermissionUser = userAutentication.ListPermissions(User.Identity.GetUserId(), Convert.ToInt32(MenuOptions.Photos));
 
                 if (PermissionUser[0].UpdateOption)
                 {
                     if (ModelState.IsValid)
                     {
-                        db.Entry(applicationRole).State = EntityState.Modified;
+                        db.Entry(photo).State = EntityState.Modified;
                         db.SaveChanges();
                         return RedirectToAction("Index");
                     }
-                    return View(applicationRole);
+                    return View(photo);
                 }
                 else
                 {
@@ -188,12 +189,12 @@ namespace Bastis.Controllers
             }
         }
 
-        // GET: ApplicationRoles/Delete/5
-        public ActionResult Delete(string id)
+        // GET: Photos/Delete/5
+        public ActionResult Delete(Guid? id)
         {
             if (User.Identity.IsAuthenticated)
             {
-                var PermissionUser = userAutentication.ListPermissions(User.Identity.GetUserId(), Convert.ToInt32(MenuOptions.ApplicationRoles));
+                var PermissionUser = userAutentication.ListPermissions(User.Identity.GetUserId(), Convert.ToInt32(MenuOptions.Photos));
 
                 if (PermissionUser[0].DeleteOption)
                 {
@@ -201,12 +202,12 @@ namespace Bastis.Controllers
                     {
                         return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                     }
-                    ApplicationRole applicationRole = db.IdentityRoles.Find(id);
-                    if (applicationRole == null)
+                    Photo photo = db.Photos.Find(id);
+                    if (photo == null)
                     {
                         return HttpNotFound();
                     }
-                    return View(applicationRole);
+                    return View(photo);
                 }
                 else
                 {
@@ -219,19 +220,19 @@ namespace Bastis.Controllers
             }
         }
 
-        // POST: ApplicationRoles/Delete/5
+        // POST: Photos/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(string id)
+        public ActionResult DeleteConfirmed(Guid id)
         {
             if (User.Identity.IsAuthenticated)
             {
-                var PermissionUser = userAutentication.ListPermissions(User.Identity.GetUserId(), Convert.ToInt32(MenuOptions.ApplicationRoles));
+                var PermissionUser = userAutentication.ListPermissions(User.Identity.GetUserId(), Convert.ToInt32(MenuOptions.Photos));
 
                 if (PermissionUser[0].DeleteOption)
                 {
-                    ApplicationRole applicationRole = db.IdentityRoles.Find(id);
-                    db.Roles.Remove(applicationRole);
+                    Photo photo = db.Photos.Find(id);
+                    db.Photos.Remove(photo);
                     db.SaveChanges();
                     return RedirectToAction("Index");
                 }

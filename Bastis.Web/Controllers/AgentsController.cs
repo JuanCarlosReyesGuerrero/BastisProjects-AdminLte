@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
-using System.Net;
-using System.Web;
-using System.Web.Mvc;
+﻿using Bastis.Common;
 using Bastis.Models;
 using Bastis.Models.Entities;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
+using System;
+using System.Data.Entity;
+using System.Linq;
+using System.Net;
+using System.Web.Mvc;
+using static Bastis.Common.Enums;
 
 namespace Bastis.Controllers
 {
@@ -17,45 +15,84 @@ namespace Bastis.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        Autentication userAutentication = new Autentication();
+
         // GET: Agents
         public ActionResult Index()
         {
             if (User.Identity.IsAuthenticated)
             {
-                if (isAdminUser())
+                var PermissionUser = userAutentication.ListPermissions(User.Identity.GetUserId(), Convert.ToInt32(MenuOptions.Agents));
+
+                if (PermissionUser[0].ViewMenu)
                 {
+
                     var agents = db.Agents.Include(a => a.Agency);
                     return View(agents.ToList());
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
                 }
             }
             else
             {
                 return RedirectToAction("Login", "Account");
             }
-
-            return View();
         }
 
         // GET: Agents/Details/5
         public ActionResult Details(Guid? id)
         {
-            if (id == null)
+            if (User.Identity.IsAuthenticated)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                var PermissionUser = userAutentication.ListPermissions(User.Identity.GetUserId(), Convert.ToInt32(MenuOptions.Agents));
+
+                if (PermissionUser[0].ReadOption)
+                {
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    Agent agent = db.Agents.Find(id);
+                    if (agent == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    return View(agent);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
             }
-            Agent agent = db.Agents.Find(id);
-            if (agent == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Login", "Account");
             }
-            return View(agent);
         }
 
         // GET: Agents/Create
         public ActionResult Create()
         {
-            ViewBag.AgencyID = new SelectList(db.Agencies, "AgencyID", "AgencyID");
-            return View();
+            if (User.Identity.IsAuthenticated)
+            {
+                var PermissionUser = userAutentication.ListPermissions(User.Identity.GetUserId(), Convert.ToInt32(MenuOptions.Agents));
+
+                if (PermissionUser[0].CreateOption)
+                {
+                    ViewBag.AgencyID = new SelectList(db.Agencies, "AgencyID", "AgencyID");
+                    return View();
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
         }
 
         // POST: Agents/Create
@@ -65,32 +102,64 @@ namespace Bastis.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "AgentID,FirstName,LastName,Address,EmploymentCharge,Expirience,Email,Phone,Mobile,AboutMe,SocialNetworks,Website,ProfilePicture,AgencyID,UserRegisters,DateRegister,UserModifies,DateModified")] Agent agent)
         {
-            if (ModelState.IsValid)
+            if (User.Identity.IsAuthenticated)
             {
-                agent.AgentID = Guid.NewGuid();
-                db.Agents.Add(agent);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+                var PermissionUser = userAutentication.ListPermissions(User.Identity.GetUserId(), Convert.ToInt32(MenuOptions.Agents));
 
-            ViewBag.AgencyID = new SelectList(db.Agencies, "AgencyID", "AgencyID", agent.AgencyID);
-            return View(agent);
+                if (PermissionUser[0].CreateOption)
+                {
+                    if (ModelState.IsValid)
+                    {
+                        agent.AgentID = Guid.NewGuid();
+                        db.Agents.Add(agent);
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+
+                    ViewBag.AgencyID = new SelectList(db.Agencies, "AgencyID", "AgencyID", agent.AgencyID);
+                    return View(agent);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
         }
 
         // GET: Agents/Edit/5
         public ActionResult Edit(Guid? id)
         {
-            if (id == null)
+            if (User.Identity.IsAuthenticated)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                var PermissionUser = userAutentication.ListPermissions(User.Identity.GetUserId(), Convert.ToInt32(MenuOptions.Agents));
+
+                if (PermissionUser[0].UpdateOption)
+                {
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    Agent agent = db.Agents.Find(id);
+                    if (agent == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    ViewBag.AgencyID = new SelectList(db.Agencies, "AgencyID", "AgencyID", agent.AgencyID);
+                    return View(agent);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
             }
-            Agent agent = db.Agents.Find(id);
-            if (agent == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Login", "Account");
             }
-            ViewBag.AgencyID = new SelectList(db.Agencies, "AgencyID", "AgencyID", agent.AgencyID);
-            return View(agent);
         }
 
         // POST: Agents/Edit/5
@@ -100,29 +169,61 @@ namespace Bastis.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "AgentID,FirstName,LastName,Address,EmploymentCharge,Expirience,Email,Phone,Mobile,AboutMe,SocialNetworks,Website,ProfilePicture,AgencyID,UserRegisters,DateRegister,UserModifies,DateModified")] Agent agent)
         {
-            if (ModelState.IsValid)
+            if (User.Identity.IsAuthenticated)
             {
-                db.Entry(agent).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                var PermissionUser = userAutentication.ListPermissions(User.Identity.GetUserId(), Convert.ToInt32(MenuOptions.Agents));
+
+                if (PermissionUser[0].UpdateOption)
+                {
+                    if (ModelState.IsValid)
+                    {
+                        db.Entry(agent).State = EntityState.Modified;
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                    ViewBag.AgencyID = new SelectList(db.Agencies, "AgencyID", "AgencyID", agent.AgencyID);
+                    return View(agent);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
             }
-            ViewBag.AgencyID = new SelectList(db.Agencies, "AgencyID", "AgencyID", agent.AgencyID);
-            return View(agent);
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
         }
 
         // GET: Agents/Delete/5
         public ActionResult Delete(Guid? id)
         {
-            if (id == null)
+            if (User.Identity.IsAuthenticated)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                var PermissionUser = userAutentication.ListPermissions(User.Identity.GetUserId(), Convert.ToInt32(MenuOptions.Agents));
+
+                if (PermissionUser[0].DeleteOption)
+                {
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    Agent agent = db.Agents.Find(id);
+                    if (agent == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    return View(agent);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
             }
-            Agent agent = db.Agents.Find(id);
-            if (agent == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Login", "Account");
             }
-            return View(agent);
         }
 
         // POST: Agents/Delete/5
@@ -130,10 +231,26 @@ namespace Bastis.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(Guid id)
         {
-            Agent agent = db.Agents.Find(id);
-            db.Agents.Remove(agent);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if (User.Identity.IsAuthenticated)
+            {
+                var PermissionUser = userAutentication.ListPermissions(User.Identity.GetUserId(), Convert.ToInt32(MenuOptions.Agents));
+
+                if (PermissionUser[0].DeleteOption)
+                {
+                    Agent agent = db.Agents.Find(id);
+                    db.Agents.Remove(agent);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
         }
 
         protected override void Dispose(bool disposing)
@@ -143,26 +260,6 @@ namespace Bastis.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }
-
-        public Boolean isAdminUser()
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                var user = User.Identity;
-                ApplicationDbContext context = new ApplicationDbContext();
-                var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
-                var s = UserManager.GetRoles(user.GetUserId());
-                if (s[0].ToString() == "AppAdmin")
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            return false;
         }
     }
 }

@@ -1,12 +1,13 @@
-﻿using Bastis.Models;
+﻿using Bastis.Common;
+using Bastis.Models;
 using Bastis.Models.Entities;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using static Bastis.Common.Enums;
 
 namespace Bastis.Controllers
 {
@@ -14,45 +15,84 @@ namespace Bastis.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        Autentication userAutentication = new Autentication();
+
         // GET: Cities
         public ActionResult Index()
         {
             if (User.Identity.IsAuthenticated)
             {
-                if (isAdminUser())
+                var PermissionUser = userAutentication.ListPermissions(User.Identity.GetUserId(), Convert.ToInt32(MenuOptions.Cities));
+
+                if (PermissionUser[0].ViewMenu)
                 {
+
                     var cities = db.Cities.Include(c => c.State);
                     return View(cities.ToList());
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
                 }
             }
             else
             {
                 return RedirectToAction("Login", "Account");
             }
-
-            return View();
         }
 
         // GET: Cities/Details/5
         public ActionResult Details(long? id)
         {
-            if (id == null)
+            if (User.Identity.IsAuthenticated)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                var PermissionUser = userAutentication.ListPermissions(User.Identity.GetUserId(), Convert.ToInt32(MenuOptions.Cities));
+
+                if (PermissionUser[0].ReadOption)
+                {
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    City city = db.Cities.Find(id);
+                    if (city == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    return View(city);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
             }
-            City city = db.Cities.Find(id);
-            if (city == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Login", "Account");
             }
-            return View(city);
         }
 
         // GET: Cities/Create
         public ActionResult Create()
         {
-            ViewBag.StateID = new SelectList(db.States, "StateID", "Code");
-            return View();
+            if (User.Identity.IsAuthenticated)
+            {
+                var PermissionUser = userAutentication.ListPermissions(User.Identity.GetUserId(), Convert.ToInt32(MenuOptions.Cities));
+
+                if (PermissionUser[0].CreateOption)
+                {
+                    ViewBag.StateID = new SelectList(db.States, "StateID", "Code");
+                    return View();
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
         }
 
         // POST: Cities/Create
@@ -62,31 +102,63 @@ namespace Bastis.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "CityID,Code,Name,UnifiedCode,StateID,StateCode,Status,UserRegisters,DateRegister,UserModifies,DateModified")] City city)
         {
-            if (ModelState.IsValid)
+            if (User.Identity.IsAuthenticated)
             {
-                db.Cities.Add(city);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+                var PermissionUser = userAutentication.ListPermissions(User.Identity.GetUserId(), Convert.ToInt32(MenuOptions.Cities));
 
-            ViewBag.StateID = new SelectList(db.States, "StateID", "Code", city.StateID);
-            return View(city);
+                if (PermissionUser[0].CreateOption)
+                {
+                    if (ModelState.IsValid)
+                    {
+                        db.Cities.Add(city);
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+
+                    ViewBag.StateID = new SelectList(db.States, "StateID", "Code", city.StateID);
+                    return View(city);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
         }
 
         // GET: Cities/Edit/5
         public ActionResult Edit(long? id)
         {
-            if (id == null)
+            if (User.Identity.IsAuthenticated)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                var PermissionUser = userAutentication.ListPermissions(User.Identity.GetUserId(), Convert.ToInt32(MenuOptions.Cities));
+
+                if (PermissionUser[0].UpdateOption)
+                {
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    City city = db.Cities.Find(id);
+                    if (city == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    ViewBag.StateID = new SelectList(db.States, "StateID", "Code", city.StateID);
+                    return View(city);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
             }
-            City city = db.Cities.Find(id);
-            if (city == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Login", "Account");
             }
-            ViewBag.StateID = new SelectList(db.States, "StateID", "Code", city.StateID);
-            return View(city);
         }
 
         // POST: Cities/Edit/5
@@ -96,29 +168,61 @@ namespace Bastis.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "CityID,Code,Name,UnifiedCode,StateID,StateCode,Status,UserRegisters,DateRegister,UserModifies,DateModified")] City city)
         {
-            if (ModelState.IsValid)
+            if (User.Identity.IsAuthenticated)
             {
-                db.Entry(city).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                var PermissionUser = userAutentication.ListPermissions(User.Identity.GetUserId(), Convert.ToInt32(MenuOptions.Cities));
+
+                if (PermissionUser[0].UpdateOption)
+                {
+                    if (ModelState.IsValid)
+                    {
+                        db.Entry(city).State = EntityState.Modified;
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                    ViewBag.StateID = new SelectList(db.States, "StateID", "Code", city.StateID);
+                    return View(city);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
             }
-            ViewBag.StateID = new SelectList(db.States, "StateID", "Code", city.StateID);
-            return View(city);
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
         }
 
         // GET: Cities/Delete/5
         public ActionResult Delete(long? id)
         {
-            if (id == null)
+            if (User.Identity.IsAuthenticated)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                var PermissionUser = userAutentication.ListPermissions(User.Identity.GetUserId(), Convert.ToInt32(MenuOptions.Cities));
+
+                if (PermissionUser[0].DeleteOption)
+                {
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    City city = db.Cities.Find(id);
+                    if (city == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    return View(city);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
             }
-            City city = db.Cities.Find(id);
-            if (city == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Login", "Account");
             }
-            return View(city);
         }
 
         // POST: Cities/Delete/5
@@ -126,10 +230,26 @@ namespace Bastis.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)
         {
-            City city = db.Cities.Find(id);
-            db.Cities.Remove(city);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if (User.Identity.IsAuthenticated)
+            {
+                var PermissionUser = userAutentication.ListPermissions(User.Identity.GetUserId(), Convert.ToInt32(MenuOptions.Cities));
+
+                if (PermissionUser[0].DeleteOption)
+                {
+                    City city = db.Cities.Find(id);
+                    db.Cities.Remove(city);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
         }
 
         protected override void Dispose(bool disposing)
@@ -139,26 +259,6 @@ namespace Bastis.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }
-
-        public Boolean isAdminUser()
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                var user = User.Identity;
-                ApplicationDbContext context = new ApplicationDbContext();
-                var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
-                var s = UserManager.GetRoles(user.GetUserId());
-                if (s[0].ToString() == "AppAdmin")
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            return false;
         }
     }
 }
