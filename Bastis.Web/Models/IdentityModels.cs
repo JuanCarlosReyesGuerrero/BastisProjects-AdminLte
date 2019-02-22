@@ -58,6 +58,9 @@ namespace Bastis.Models
         public DbSet<Photo> Photos { get; set; }
 
 
+        public DbSet<Prueba> Pruebas { get; set; }
+
+
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();

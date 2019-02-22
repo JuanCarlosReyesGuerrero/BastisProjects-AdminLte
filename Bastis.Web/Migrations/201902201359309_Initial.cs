@@ -96,6 +96,22 @@ namespace Bastis.Migrations
                 .Index(t => t.Client_ClientID);
             
             CreateTable(
+                "dbo.Photos",
+                c => new
+                    {
+                        PhotoID = c.Guid(nullable: false),
+                        URLPhoto = c.String(),
+                        UserRegisters = c.Guid(),
+                        DateRegister = c.DateTime(),
+                        UserModifies = c.Guid(),
+                        DateModified = c.DateTime(),
+                        Property_PropertyID = c.Int(),
+                    })
+                .PrimaryKey(t => t.PhotoID)
+                .ForeignKey("dbo.Properties", t => t.Property_PropertyID)
+                .Index(t => t.Property_PropertyID);
+            
+            CreateTable(
                 "dbo.States",
                 c => new
                     {
@@ -279,6 +295,15 @@ namespace Bastis.Migrations
                 .Index(t => t.Agent_AgentID)
                 .Index(t => t.Property_PropertyID);
             
+            CreateTable(
+                "dbo.Pruebas",
+                c => new
+                    {
+                        ID = c.Int(nullable: false, identity: true),
+                        nombre = c.String(),
+                    })
+                .PrimaryKey(t => t.ID);
+            
         }
         
         public override void Down()
@@ -297,6 +322,7 @@ namespace Bastis.Migrations
             DropForeignKey("dbo.Clients", "Agent_AgentID", "dbo.Agents");
             DropForeignKey("dbo.Properties", "State_StateID", "dbo.States");
             DropForeignKey("dbo.Cities", "StateID", "dbo.States");
+            DropForeignKey("dbo.Photos", "Property_PropertyID", "dbo.Properties");
             DropForeignKey("dbo.Properties", "Agent_AgentID", "dbo.Agents");
             DropForeignKey("dbo.Properties", "Agency_AgencyID", "dbo.Agencies");
             DropForeignKey("dbo.Agents", "AgencyID", "dbo.Agencies");
@@ -314,11 +340,13 @@ namespace Bastis.Migrations
             DropIndex("dbo.CustomPermissions", new[] { "ApplicationUserId" });
             DropIndex("dbo.Clients", new[] { "Agent_AgentID" });
             DropIndex("dbo.Cities", new[] { "StateID" });
+            DropIndex("dbo.Photos", new[] { "Property_PropertyID" });
             DropIndex("dbo.Properties", new[] { "Client_ClientID" });
             DropIndex("dbo.Properties", new[] { "State_StateID" });
             DropIndex("dbo.Properties", new[] { "Agent_AgentID" });
             DropIndex("dbo.Properties", new[] { "Agency_AgencyID" });
             DropIndex("dbo.Agents", new[] { "AgencyID" });
+            DropTable("dbo.Pruebas");
             DropTable("dbo.Leads");
             DropTable("dbo.AspNetRoles");
             DropTable("dbo.Permissions");
@@ -331,6 +359,7 @@ namespace Bastis.Migrations
             DropTable("dbo.Clients");
             DropTable("dbo.Cities");
             DropTable("dbo.States");
+            DropTable("dbo.Photos");
             DropTable("dbo.Properties");
             DropTable("dbo.Agents");
             DropTable("dbo.Agencies");

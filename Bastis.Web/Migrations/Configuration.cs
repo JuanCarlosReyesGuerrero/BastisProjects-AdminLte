@@ -77,15 +77,18 @@ namespace Bastis.Migrations
             context.SaveChanges();
 
             //********************************************************************************
-            var vRolId = "40850b2d-64ab-4f10-a468-a19788e04f9e";
+            //var vRolId = "40850b2d-64ab-4f10-a468-a19788e04f9e";
 
-            //if (context.Roles.Any(r => r.Name == "AppAdmin"))
-            //{
-            //    var role = new ApplicationRole { Name = "AppAdmin" };
-            //    vRolId = role.Id;
-            //}
+            var vRolId = "";
 
-            var Permissions = new List<Permission>
+            if (context.Roles.Any(r => r.Name == "AppAdmin"))
+            {
+                var rm = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(new ApplicationDbContext()));
+                var role = rm.FindByName("AppAdmin");
+                vRolId = role.Id;
+            }
+
+            var permissions = new List<Permission>
             {
                 new Permission { ApplicationRoleId = vRolId, MenuID = 1, ViewMenu = true, CreateOption = true, ReadOption = true, UpdateOption = true, DeleteOption = true },
                 new Permission { ApplicationRoleId = vRolId, MenuID = 2, ViewMenu = true, CreateOption = true, ReadOption = true, UpdateOption = true, DeleteOption = true },
@@ -98,12 +101,27 @@ namespace Bastis.Migrations
                 new Permission { ApplicationRoleId = vRolId, MenuID = 9, ViewMenu = true, CreateOption = true, ReadOption = true, UpdateOption = true, DeleteOption = true },
                 new Permission { ApplicationRoleId = vRolId, MenuID = 10, ViewMenu = true, CreateOption = true, ReadOption = true, UpdateOption = true, DeleteOption = true },
                 new Permission { ApplicationRoleId = vRolId, MenuID = 11, ViewMenu = true, CreateOption = true, ReadOption = true, UpdateOption = true, DeleteOption = true },
-                new Permission { ApplicationRoleId = vRolId, MenuID = 12, ViewMenu = true, CreateOption = true, ReadOption = true, UpdateOption = true, DeleteOption = true }               
+                new Permission { ApplicationRoleId = vRolId, MenuID = 12, ViewMenu = true, CreateOption = true, ReadOption = true, UpdateOption = true, DeleteOption = true }
             };
-            Permissions.ForEach(s => context.Permissions.AddOrUpdate(p => p.MenuID, s));
+            permissions.ForEach(s => context.Permissions.AddOrUpdate(p => p.MenuID, s));
             context.SaveChanges();
 
+            //**************************************************************************************************
+            //string vRolIdx = "zz";
+            //if (context.Roles.Any(r => r.Name == "AppAdmin"))
+            //{
+            //    var rm = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(new ApplicationDbContext()));
+            //    var role = rm.FindByName("AppAdmin");               
+            //    vRolIdx = role.Id;
+            //}
+            //var pruebas = new List<Models.Entities.Prueba>
+            //{
+            //     new Models.Entities.Prueba {nombre = vRolIdx}
+            //};
+            //pruebas.ForEach(s => context.Pruebas.AddOrUpdate(p => p.nombre, s));
+            //context.SaveChanges();
 
+            //**************************************************************************************************
 
 
             //INSERT INTO Permissions(ApplicationRoleId, MenuID, ViewMenu, CreateOption, ReadOption, UpdateOption, DeleteOption)VALUES('f73062aa-a70d-4a75-a4eb-8d1a5209f062', 1, 1, 1, 1, 1, 1);

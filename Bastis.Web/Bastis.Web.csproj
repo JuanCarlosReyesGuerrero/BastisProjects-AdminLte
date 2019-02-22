@@ -190,13 +190,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\HTMLHelperExtensions.cs" />
-    <Compile Include="Migrations\201902151308020_Initial.cs" />
-    <Compile Include="Migrations\201902151308020_Initial.Designer.cs">
-      <DependentUpon>201902151308020_Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201902181319183_Photo.cs" />
-    <Compile Include="Migrations\201902181319183_Photo.Designer.cs">
-      <DependentUpon>201902181319183_Photo.cs</DependentUpon>
+    <Compile Include="Migrations\201902201359309_Initial.cs" />
+    <Compile Include="Migrations\201902201359309_Initial.Designer.cs">
+      <DependentUpon>201902201359309_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -210,6 +206,7 @@
     <Compile Include="Models\Entities\Permission.cs" />
     <Compile Include="Models\Entities\Photo.cs" />
     <Compile Include="Models\Entities\Property.cs" />
+    <Compile Include="Models\Entities\Prueba.cs" />
     <Compile Include="Models\Entities\State.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -4313,11 +4310,8 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201902151308020_Initial.resx">
-      <DependentUpon>201902151308020_Initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201902181319183_Photo.resx">
-      <DependentUpon>201902181319183_Photo.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201902201359309_Initial.resx">
+      <DependentUpon>201902201359309_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

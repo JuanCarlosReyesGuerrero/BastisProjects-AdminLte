@@ -13,7 +13,7 @@ namespace Bastis.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201902151308020_Initial"; }
+            get { return "201902201359309_Initial"; }
         }
         
         string IMigrationMetadata.Source
