@@ -1,104 +1,4 @@
-﻿@*@model Bastis.Models.Entities.Permission
-
-    @{
-        ViewBag.Title = "Create";
-    }
-
-    <h2>Create</h2>
-
-
-    @using (Html.BeginForm())
-    {
-        @Html.AntiForgeryToken()
-
-        <div class="form-horizontal">
-            <h4>Permission</h4>
-            <hr />
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            <div class="form-group">
-                @Html.LabelFor(model => model.RoleID, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.RoleID, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.RoleID, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.MenuID, "MenuID", htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.DropDownList("MenuID", null, htmlAttributes: new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.MenuID, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.ViewMenu, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    <div class="checkbox">
-                        @Html.EditorFor(model => model.ViewMenu)
-                        @Html.ValidationMessageFor(model => model.ViewMenu, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.CreateOption, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    <div class="checkbox">
-                        @Html.EditorFor(model => model.CreateOption)
-                        @Html.ValidationMessageFor(model => model.CreateOption, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.ReadOption, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    <div class="checkbox">
-                        @Html.EditorFor(model => model.ReadOption)
-                        @Html.ValidationMessageFor(model => model.ReadOption, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.UpdateOption, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    <div class="checkbox">
-                        @Html.EditorFor(model => model.UpdateOption)
-                        @Html.ValidationMessageFor(model => model.UpdateOption, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.DeleteOption, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    <div class="checkbox">
-                        @Html.EditorFor(model => model.DeleteOption)
-                        @Html.ValidationMessageFor(model => model.DeleteOption, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Create" class="btn btn-default" />
-                </div>
-            </div>
-        </div>
-    }
-
-    <div>
-        @Html.ActionLink("Back to List", "Index")
-    </div>
-
-    @section Scripts {
-        @Scripts.Render("~/bundles/jqueryval")
-    }*@
-
-
-@model Bastis.Models.Entities.Permission
+﻿@model Bastis.Models.Entities.Permission
 
 @{
     ViewBag.Title = "General";
@@ -109,13 +9,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            General Form Elements
-            <small>Preview</small>
+            Creando Permisos
+            <small>Configuración</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li><a href="#">Forms</a></li>
-            <li class="active">General Elements</li>
+            <li><a href="#">Configuración</a></li>
+            <li class="active">Permisos</li>
         </ol>
     </section>
     <!-- Main content -->
@@ -126,7 +26,8 @@
                 <!-- general form elements -->
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Quick Example</h3>
+                        <i class="fa fa-fw fa-thumb-tack"></i>
+                        <h3 class="box-title">Creación Permiso </h3>
                     </div>
                     <!-- /.box-header -->
                     <!-- form start -->
@@ -134,7 +35,6 @@
                     {
                         @Html.AntiForgeryToken()
 
-                        <hr />
                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
                         <div class="box-body">
@@ -142,24 +42,12 @@
                                 @Html.LabelFor(model => model.ApplicationRoleId, htmlAttributes: new { @class = "" })
                                 @Html.DropDownList("ApplicationRoleId", null, htmlAttributes: new { @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.ApplicationRoleId, "", new { @class = "text-danger" })
-
                             </div>
                             <div class="form-group">
                                 @Html.LabelFor(model => model.MenuID, "MenuID", htmlAttributes: new { @class = "" })
                                 @Html.DropDownList("MenuID", null, htmlAttributes: new { @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.MenuID, "", new { @class = "text-danger" })
-
                             </div>
-
-                            @*<div class="form-group">
-                                    @Html.LabelFor(model => model.ViewMenu, htmlAttributes: new { @class = "control-label col-md-2" })
-
-                                    <div class="checkbox">
-                                        @Html.EditorFor(model => model.ViewMenu)
-                                        @Html.ValidationMessageFor(model => model.ViewMenu, "", new { @class = "text-danger" })
-                                    </div>
-
-                                </div>*@
 
                             <div class="form-group">
                                 <div class="checkbox">
@@ -170,16 +58,6 @@
                                 </div>
                             </div>
 
-                            @*<div class="form-group">
-                                    @Html.LabelFor(model => model.CreateOption, htmlAttributes: new { @class = "control-label col-md-2" })
-
-                                    <div class="checkbox">
-                                        @Html.EditorFor(model => model.CreateOption)
-                                        @Html.ValidationMessageFor(model => model.CreateOption, "", new { @class = "text-danger" })
-                                    </div>
-
-                                </div>*@
-
                             <div class="form-group">
                                 <div class="checkbox">
                                     <label>
@@ -188,16 +66,6 @@
                                     </label>
                                 </div>
                             </div>
-
-                            @*<div class="form-group">
-                                    @Html.LabelFor(model => model.ReadOption, htmlAttributes: new { @class = "control-label col-md-2" })
-
-                                    <div class="checkbox">
-                                        @Html.EditorFor(model => model.ReadOption)
-                                        @Html.ValidationMessageFor(model => model.ReadOption, "", new { @class = "text-danger" })
-                                    </div>
-
-                                </div>*@
 
                             <div class="form-group">
                                 <div class="checkbox">
@@ -208,16 +76,6 @@
                                 </div>
                             </div>
 
-                            @*<div class="form-group">
-                                    @Html.LabelFor(model => model.UpdateOption, htmlAttributes: new { @class = "control-label col-md-2" })
-
-                                    <div class="checkbox">
-                                        @Html.EditorFor(model => model.UpdateOption)
-                                        @Html.ValidationMessageFor(model => model.UpdateOption, "", new { @class = "text-danger" })
-                                    </div>
-
-                                </div>*@
-
                             <div class="form-group">
                                 <div class="checkbox">
                                     <label>
@@ -227,16 +85,6 @@
                                 </div>
                             </div>
 
-                            @*<div class="form-group">
-                                    @Html.LabelFor(model => model.DeleteOption, htmlAttributes: new { @class = "control-label col-md-2" })
-
-                                    <div class="checkbox">
-                                        @Html.EditorFor(model => model.DeleteOption)
-                                        @Html.ValidationMessageFor(model => model.DeleteOption, "", new { @class = "text-danger" })
-                                    </div>
-
-                                </div>*@
-
                             <div class="form-group">
                                 <div class="checkbox">
                                     <label>
@@ -245,43 +93,14 @@
                                     </label>
                                 </div>
                             </div>
-
-
-
-
-
-                            <div class="form-group">
-                            </div>
-                            <div class="form-group">
-                            </div>
-
-
-
-
-
-
-
-
-
-                            @*<div class="form-group">
-                                    <div class="checkbox">
-                                        <label>
-                                            @Html.EditorFor(model => model.Status)  @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "" })
-                                            @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
-                                        </label>
-                                    </div>
-                                </div>*@
                         </div>
                         <!-- /.box-body -->
 
                         <div class="box-footer">
+                            @Html.ActionLink("Regresar", "Index", "", new { @class = "btn btn-default btn-large" })
                             <input type="submit" value="Guardar" class="btn btn-primary" />
                         </div>
                     }
-
-                    <div>
-                        @Html.ActionLink("Back to List", "Index")
-                    </div>
 
                 </div>
             </div>
@@ -294,8 +113,6 @@
 <!-- /.content-wrapper -->
 
 
-
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
-

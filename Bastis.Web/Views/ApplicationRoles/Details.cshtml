@@ -1,39 +1,4 @@
-﻿@*@model Bastis.Models.ApplicationRole
-
-    @{
-        ViewBag.Title = "Details";
-    }
-
-    <h2>Details</h2>
-
-    <div>
-        <h4>ApplicationRole</h4>
-        <hr />
-        <dl class="dl-horizontal">
-            <dt>
-                @Html.DisplayNameFor(model => model.Name)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.Name)
-            </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.Description)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.Description)
-            </dd>
-
-        </dl>
-    </div>
-    <p>
-        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-        @Html.ActionLink("Back to List", "Index")
-    </p>*@
-
-@model Bastis.Models.ApplicationRole
+﻿@model Bastis.Models.ApplicationRole
 
 @{
     ViewBag.Title = "General";
@@ -45,7 +10,7 @@
     <section class="content-header">
         <h1>
             Detallando Roles
-            <small>Security</small>
+            <small>Configuración</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -69,8 +34,7 @@
                     @Html.AntiForgeryToken()
 
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                    @Html.HiddenFor(model => model.Id)
-
+                    
                     <div class="box-body">
                         <div class="form-group">
                             <dl class="dl-horizontal">

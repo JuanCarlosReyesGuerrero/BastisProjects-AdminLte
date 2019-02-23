@@ -86,7 +86,6 @@ E:\Developer\AdminLTE-ASP-NET-MVC-master\adminlte\bin\System.Web.Optimization.xm
 E:\Developer\AdminLTE-ASP-NET-MVC-master\adminlte\obj\Debug\Bastis.Web.csproj.CopyComplete
 D:\Developments\BastisProjects-AdminLte\Bastis.Web\obj\Debug\Bastis.Web.csprojAssemblyReference.cache
 D:\Developments\BastisProjects-AdminLte\Bastis.Web\obj\Debug\Bastis.Migrations.Initial.resources
-D:\Developments\BastisProjects-AdminLte\Bastis.Web\obj\Debug\Bastis.Migrations.Photo.resources
 D:\Developments\BastisProjects-AdminLte\Bastis.Web\obj\Debug\Bastis.Web.csproj.GenerateResource.cache
 D:\Developments\BastisProjects-AdminLte\Bastis.Web\obj\Debug\Bastis.Web.csproj.CoreCompileInputs.cache
 D:\Developments\BastisProjects-AdminLte\Bastis.Web\obj\Debug\Bastis.dll

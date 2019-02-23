@@ -81,7 +81,7 @@ namespace Bastis.Controllers
 
                 if (PermissionUser[0].CreateOption)
                 {
-                    ViewBag.StateID = new SelectList(db.States, "StateID", "Code");
+                    ViewBag.StateID = new SelectList(db.States, "StateID", "Name");
                     return View();
                 }
                 else
@@ -115,7 +115,7 @@ namespace Bastis.Controllers
                         return RedirectToAction("Index");
                     }
 
-                    ViewBag.StateID = new SelectList(db.States, "StateID", "Code", city.StateID);
+                    ViewBag.StateID = new SelectList(db.States, "StateID", "Name", city.StateID);
                     return View(city);
                 }
                 else
@@ -147,7 +147,7 @@ namespace Bastis.Controllers
                     {
                         return HttpNotFound();
                     }
-                    ViewBag.StateID = new SelectList(db.States, "StateID", "Code", city.StateID);
+                    ViewBag.StateID = new SelectList(db.States, "StateID", "Name", city.StateID);
                     return View(city);
                 }
                 else
@@ -180,7 +180,7 @@ namespace Bastis.Controllers
                         db.SaveChanges();
                         return RedirectToAction("Index");
                     }
-                    ViewBag.StateID = new SelectList(db.States, "StateID", "Code", city.StateID);
+                    ViewBag.StateID = new SelectList(db.States, "StateID", "Name", city.StateID);
                     return View(city);
                 }
                 else

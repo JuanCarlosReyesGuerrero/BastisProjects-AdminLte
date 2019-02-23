@@ -1,94 +1,4 @@
-﻿@*@model IEnumerable<Bastis.Models.Entities.City>
-
-    @{
-        ViewBag.Title = "Index";
-    }
-
-    <h2>Index</h2>
-
-    <p>
-        @Html.ActionLink("Create New", "Create")
-    </p>
-    <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.State.Code)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Code)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UnifiedCode)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StateCode)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserRegisters)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DateRegister)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserModifies)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DateModified)
-            </th>
-            <th></th>
-        </tr>
-
-    @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.State.Code)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Code)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UnifiedCode)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StateCode)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserRegisters)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateRegister)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserModifies)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateModified)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-                @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-                @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-            </td>
-        </tr>
-    }
-
-    </table>*@
-
-
-
-@model IEnumerable<Bastis.Models.Entities.City>
+﻿@model IEnumerable<Bastis.Models.Entities.City>
 
 @{
     ViewBag.Title = "Data";
@@ -99,13 +9,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Data Tables
-            <small>advanced tables</small>
+            Municipios
+            <small>Configuración</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li><a href="#">Tables</a></li>
-            <li class="active">Data tables</li>
+            <li><a href="#">Configuración</a></li>
+            <li class="active">Municipios</li>
         </ol>
     </section>
     <!-- Main content -->
@@ -115,7 +25,6 @@
                 <!-- /.box -->
                 <div class="box">
                     <div class="box-header">
-                        @*<h3 class="box-title">Data Table With Full Features</h3>*@
                         <p>
                             @Html.ActionLink("Crear nuevo", "Create", "Cities", null, new { @class = "btn btn-primary btn-large" })
                         </p>
@@ -145,19 +54,6 @@
                                         <td>
                                             @Html.DisplayFor(modelItem => item.Status)
                                         </td>
-
-                                        @*<td>
-                                                @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
-                                                @Html.ActionLink("Details", "Details", new { id = item.ID }) |
-                                                @Html.ActionLink("Delete", "Delete", new { id = item.ID })
-                                            </td>*@
-
-                                        @*<td>
-                                                @Html.ActionLink(" ", "Edit", new { id = item.ID }, htmlAttributes: new { @class = "glyphicon glyphicon-pencil" }) |
-                                                @Html.ActionLink(" ", "Details", new { id = item.ID }, htmlAttributes: new { @class = "glyphicon glyphicon-list-alt" }) |
-                                                @Html.ActionLink(" ", "Delete", new { id = item.ID }, htmlAttributes: new { @class = "glyphicon glyphicon-trash" })
-                                            </td>*@
-
                                         <td>
                                             <a href="@Url.Action("Edit", "Cities", new { id = item.CityID })" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></a>
 
@@ -165,7 +61,6 @@
 
                                             <a href="@Url.Action("Delete", "Cities", new { id = item.CityID })" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></a>
                                         </td>
-
                                     </tr>
                                 }
 
